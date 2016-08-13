@@ -1,0 +1,18 @@
+<package format="2">
+  <name>tacbot_description</name>
+  <version>1.0.1</version>
+  <description>
+	The description of robot.
+  </description>
+  <author>Michal Drwiega</author>
+  <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/</url>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+
+</package>
