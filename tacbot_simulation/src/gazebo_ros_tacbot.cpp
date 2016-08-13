@@ -34,8 +34,19 @@
  * @brief  tacbot simulation
  */
 
+#include <cmath>
+#include <functional>
+
 #include <gazebo_ros_tacbot.h>
-#include <boost/bind.hpp>
+
+#include <tf/LinearMath/Quaternion.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <nav_msgs/Odometry.h>
+
+#include <gazebo/common/PID.hh>
+#include <gazebo_plugins/gazebo_ros_utils.h>
+#include <gazebo/math/gzmath.hh>
+
 
 namespace gazebo {
 
@@ -75,7 +86,7 @@ void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
     if(!parseSdfAndSetupWheelJoints() || !parseOtherSdfParameters()) return;
 
     setupRosPubAndSub();
-    update_connection_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&GazeboRosTacbot::onUpdate, this));
+    update_connection_ = event::Events::ConnectWorldUpdateBegin(std::bind(&GazeboRosTacbot::onUpdate, this));
 
     prev_update_time_ = world_->GetSimTime();
     ROS_INFO_STREAM("GazeboRosTacbot plugin ready to go! [" << model_->GetName() << "]");
@@ -116,13 +127,13 @@ void GazeboRosTacbot::onUpdate()
 }
 
 //=================================================================================================
-void GazeboRosTacbot::resetOdomCB(const std_msgs::EmptyConstPtr &msg)
+void GazeboRosTacbot::resetOdomCB(const std_msgs::EmptyConstPtr & msg)  noexcept
 {
     odom_pose_ = {0.0, 0.0, 0.0};
 }
 
 //==============================================================================
-void GazeboRosTacbot::cmdVelocitiesCb(const geometry_msgs::TwistConstPtr &msg)
+void GazeboRosTacbot::cmdVelocitiesCb(const geometry_msgs::TwistConstPtr &msg) noexcept
 {
     wheel_speed_cmd_[static_cast<int>(Wheel::BL)] = msg->linear.x - msg->angular.z * back_wheel_separation_ / 2;
     wheel_speed_cmd_[static_cast<int>(Wheel::BR)] = msg->linear.x + msg->angular.z * back_wheel_separation_ / 2;

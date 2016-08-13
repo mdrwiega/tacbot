@@ -36,7 +36,6 @@
 
 #pragma once
 
-#include <cmath>
 #include <string>
 #include <array>
 #include <memory>
@@ -45,20 +44,11 @@
 #include <std_msgs/Empty.h>
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/Twist.h>
-#include <geometry_msgs/TransformStamped.h>
-#include <nav_msgs/Odometry.h>
 #include <tf2_ros/transform_broadcaster.h>
-#include <tf/tf.h>
-#include <tf/LinearMath/Quaternion.h>
 
 #include <gazebo/gazebo_client.hh>
-#include <gazebo/gazebo_config.h>
-
-#include <gazebo/common/PID.hh>
 #include <gazebo/common/Time.hh>
-#include <gazebo/math/gzmath.hh>
 #include <gazebo/physics/physics.hh>
-#include <gazebo_plugins/gazebo_ros_utils.h>
 
 namespace gazebo {
 
@@ -67,7 +57,7 @@ constexpr uint WHEELS_COUNT = 4;
 enum class Wheel {BL = 0, BR = 1, FL = 2, FR = 3};
 
 /// Converts Wheel enum to string.
-std::string toString(Wheel wheel) noexcept {
+constexpr auto toString(const Wheel wheel) noexcept {
     switch (wheel) {
     case Wheel::BL: return "BL";
     case Wheel::BR: return "BR";
@@ -87,15 +77,15 @@ public:
 
 private:
     /// Called when plugin is loaded
-    virtual void Load(physics::ModelPtr parent, sdf::ElementPtr sdf);
+    void Load(physics::ModelPtr parent, sdf::ElementPtr sdf) override;
     /// Setup ROS publishers and subscribers
     void setupRosPubAndSub();
     /// Called by the world update start event
     void onUpdate();
     /// Callback for resetting the odometry data
-    void resetOdomCB(const std_msgs::EmptyConstPtr &msg);
+    void resetOdomCB(const std_msgs::EmptyConstPtr & msg) noexcept;
     /// Callback for incoming velocity commands
-    void cmdVelocitiesCb(const geometry_msgs::TwistConstPtr &msg);
+    void cmdVelocitiesCb(const geometry_msgs::TwistConstPtr & msg) noexcept;
     /// Parse sdf model to set joints parameters
     bool parseSdfAndSetupWheelJoints();
     /// Parse sdf model to set other parameters
@@ -103,25 +93,25 @@ private:
     /// Publishes joints states
     void publishJointState();
     /// Updates and publishes odometery
-    void updateAndPublishOdometry(common::Time &&step_time);
+    void updateAndPublishOdometry(common::Time && step_time);
     /// Sets velocities joints based on received commands
     void setJointsVelocities();
 
 private:
     //-----------------------------------------------------------------------------------------------
 
-    physics::WorldPtr world_;                   ///< pointer to simulated world
-    physics::ModelPtr model_;                   ///< Pointer to the model
-    sdf::ElementPtr sdf_;                       ///< Pointer the the SDF element of the plugin.
-    event::ConnectionPtr update_connection_;    ///< Pointer to the update event connection
+    physics::WorldPtr world_;                       ///< pointer to simulated world
+    physics::ModelPtr model_;                       ///< Pointer to the model
+    sdf::ElementPtr sdf_;                           ///< Pointer the the SDF element of the plugin.
+    event::ConnectionPtr update_connection_;        ///< Pointer to the update event connection
     std::array<physics::JointPtr, WHEELS_COUNT> joints_;          ///< Pointers to Gazebo's joints
     std::array<double, WHEELS_COUNT> wheel_speed_cmd_{{0,0,0,0}}; ///< Desired speeds of wheels
 
-    std::unique_ptr<ros::NodeHandle> ros_node_; ///< A node use for ROS transport
-    sensor_msgs::JointState joint_state_;       ///< ROS message for joint sates
-    std::string tf_prefix_;                     ///< TF Prefix
-    common::Time prev_update_time_;             ///< Simulation time on previous update
-    std::array<double,3> odom_pose_{{0,0,0}};   ///< Odometry position
+    std::unique_ptr<ros::NodeHandle> ros_node_;     ///< A node use for ROS transport
+    sensor_msgs::JointState joint_state_;           ///< ROS message for joint sates
+    std::string tf_prefix_;                         ///< TF Prefix
+    common::Time prev_update_time_;                 ///< Simulation time on previous update
+    std::array<double,3> odom_pose_{{0,0,0}};       ///< Odometry position
 
     // Publishers and subscribers
     ros::Publisher  pub_odom_;                      ///< Odometry data publisher

@@ -6,7 +6,7 @@
         <gazebo reference="wheel_${postfix}">
             <mu1>1.0</mu1>
             <mu2>1.0</mu2>
-            <kp>10000.0</kp>
+            <kp>100000.0</kp>
             <kd>10.0</kd>
             <minDepth>0.001</minDepth>
             <maxVel>1.0</maxVel>
@@ -37,13 +37,13 @@
                 <wheel_BR_joint_name>wheel_BR_joint</wheel_BR_joint_name>
                 <wheel_FL_joint_name>wheel_FL_joint</wheel_FL_joint_name>
                 <wheel_FR_joint_name>wheel_FR_joint</wheel_FR_joint_name>
-                <reg_kp>1.0</reg_kp>
+                <reg_kp>2.0</reg_kp>
                 <reg_ki>0</reg_ki>
                 <reg_kd>0</reg_kd>
                 <back_wheel_separation>.3</back_wheel_separation>
                 <front_wheel_separation>.3</front_wheel_separation>
                 <wheel_diameter>0.11</wheel_diameter>
-                <max_torque>0.5</max_torque>
+                <max_torque>0.4</max_torque>
                 <publish_tf>1</publish_tf>
             </plugin>
         </gazebo>

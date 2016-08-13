@@ -2,16 +2,16 @@
 <robot name="sensor_kinect" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:property name="kinect_cam_py" value="-0.0125"/>
-	<xacro:property name="cam_px" value="-0.087" />
-<!--	<property name="cam_py" value="-0.0125" /> -->
-	<xacro:property name="cam_pz" value="0.12" />
+        <xacro:property name="cam_px" value="0.085" />
+        <xacro:property name="cam_py" value="0.0125" />
+        <xacro:property name="cam_pz" value="0.14" />
 	<xacro:property name="cam_or" value="0" />
 	<xacro:property name="cam_op" value="0" />
-	<xacro:property name="cam_oy" value="0" />
+        <xacro:property name="cam_oy" value="${pi}" />
 
   <xacro:macro name="sensor_kinect" params="parent">
     <joint name="camera_rgb_joint" type="fixed">
-      <origin xyz="${cam_px} ${kinect_cam_py} ${cam_pz}" rpy="${cam_or} ${cam_op} ${cam_oy}"/>
+      <origin xyz="${cam_px} ${cam_py} ${cam_pz}" rpy="${cam_or} ${cam_op} ${cam_oy}"/>
       <parent link="${parent}"/>
       <child link="camera_rgb_frame" />
     </joint>
