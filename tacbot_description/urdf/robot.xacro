@@ -2,106 +2,118 @@
 <!-- Tacbot robot -->
 <robot name="tacbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<!-- Constants-->
-<xacro:property name="base_length"  value=".35"/>
-<xacro:property name="base_width"   value=".3"/>
-<xacro:property name="base_height"  value=".055"/>
-<xacro:property name="wheel_width"  value=".04"/>
-<xacro:property name="wheel_radius" value=".06"/>
-<xacro:property name="wheel_dis"    value=".02"/>
+    <!-- Constants-->
+    <xacro:property name="base_length"  value=".35"/>
+    <xacro:property name="base_width"   value=".3"/>
+    <xacro:property name="base_height"  value=".055"/>
+    <xacro:property name="wheel_width"  value=".04"/>
+    <xacro:property name="wheel_radius" value=".06"/>
+    <xacro:property name="wheel_dis"    value=".02"/>
 
-<!-- Base link definition-->
-<xacro:macro name="base_box"> <box size="${base_length} ${base_width} ${base_height}"/> </xacro:macro>
-<xacro:macro name="base_origin"> <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/> </xacro:macro>
+    <!-- Base dummy link -->
+    <link name="base_footprint"/>
+    <joint name="base_joint" type="fixed">
+      <origin xyz="0 0 0.0" rpy="0 0 0" />
+      <parent link="base_footprint"/>
+      <child link="base_link" />
+    </joint>
 
-<link name="base_link">
-    <visual>
-        <geometry>
-            <xacro:base_box/>
-        </geometry>
-        <xacro:base_origin/>
-        <material name="gray">
-		     <color rgba=".2 .2 .2 1" />
-        </material>
-    </visual>
-    <collision>
-        <geometry>
-            <xacro:base_box/>
-        </geometry>
-        <xacro:base_origin/>
-        <contact_coefficients mu="0" kp="1000.0" kd="1.0"/>
-    </collision>
-    <inertial>
-		  <origin xyz="0 0 0"/>
-        <mass value="3"/> <!-- 3 kg -->
-        <inertia ixx="0.3" ixy="0" ixz="0" iyy="0.3" iyz="0" izz="0.6" />
-    </inertial>
-</link>
+    <!-- Base link definition-->
+    <xacro:macro name="base_box"> <box size="${base_length} ${base_width} ${base_height}"/> </xacro:macro>
+    <xacro:macro name="base_origin"> <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/> </xacro:macro>
 
-<xacro:macro name="wheel_cyl"> <cylinder radius="${wheel_radius}" length="${wheel_width}" /> </xacro:macro>
-
-<xacro:macro name="wheel_joint_origin">
-    <origin xyz="${front*(base_length/2-wheel_dis)} ${side*(base_width/2+wheel_width/2)} ${wheel_radius}" rpy="${pi/2} 0 0"/>
-</xacro:macro>
-
-<xacro:macro name="wheel" params="postfix side front">
-    <link name="wheel_${postfix}">
+    <link name="base_link">
         <visual>
-            <geometry>  
-		      	<xacro:wheel_cyl />
+            <geometry>
+                <xacro:base_box/>
             </geometry>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-            <material name="black">
-                <color rgba="0 0 0 1"/>
+            <xacro:base_origin/>
+            <material name="gray">
+                         <color rgba=".2 .2 .2 1" />
             </material>
         </visual>
         <collision>
             <geometry>
-                <xacro:wheel_cyl />
+                <xacro:base_box/>
             </geometry>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
+            <xacro:base_origin/>
             <contact_coefficients mu="0" kp="1000.0" kd="1.0"/>
         </collision>
         <inertial>
-            <mass value="0.1" />
-            <inertia ixx="0.05" ixy="0.0" ixz="0.0" iyy="0.05" iyz="0.0" izz="0.05"/>
-    		</inertial>
+                      <origin xyz="0 0 0"/>
+            <mass value="3"/> <!-- 3 kg -->
+            <inertia ixx="0.3" ixy="0" ixz="0" iyy="0.3" iyz="0" izz="0.6" />
+        </inertial>
     </link>
 
-    <joint name="wheel_${postfix}_joint" type="continuous">
-        <parent link="base_link"/>
-        <child link="wheel_${postfix}"/>
-        <xacro:wheel_joint_origin />
-		  <axis xyz="0 0 1"/>
-        <dynamics damping="0" friction = "0" />
-        <limit effort="50" velocity="1.0" />
-        <safety_controller k_velocity="10" />
-    </joint>
-  
-	 <transmission name="tran_${postfix}">
-        <type>transmission_interface/SimpleTransmission</type>
-    	  <joint name="wheel_${postfix}_joint">
-        	   <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    <!-- Wheel macros -->
+    <xacro:macro name="wheel_cyl"> <cylinder radius="${wheel_radius}" length="${wheel_width}" /> </xacro:macro>
+    <xacro:macro name="wheel_joint_origin">
+        <origin xyz="${front*(base_length/2-wheel_dis)} ${side*(base_width/2+wheel_width/2)} ${wheel_radius}"
+                rpy="${pi/2} 0 0"/>
+    </xacro:macro>
+
+    <xacro:macro name="wheel" params="postfix side front">
+        <!-- Wheel links -->
+        <link name="wheel_${postfix}">
+            <visual>
+                <geometry>
+                    <xacro:wheel_cyl />
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <material name="black">
+                    <color rgba="0 0 0 1"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <xacro:wheel_cyl />
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <contact_coefficients mu="0" kp="1000.0" kd="1.0"/>
+            </collision>
+            <inertial>
+                <mass value="0.1" />
+                <inertia ixx="0.05" ixy="0.0" ixz="0.0" iyy="0.05" iyz="0.0" izz="0.05"/>
+            </inertial>
+        </link>
+
+        <!-- Wheel joints -->
+        <joint name="wheel_${postfix}_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="wheel_${postfix}"/>
+            <xacro:wheel_joint_origin />
+            <axis xyz="0 0 1"/>
+            <dynamics damping="0" friction = "0" />
+            <limit effort="50" velocity="1.0" />
+            <safety_controller k_velocity="10" />
         </joint>
-    	  <actuator name="motor_${postfix}">
-        		<hardwareInterface>VelocityJointInterface</hardwareInterface>
-      		<mechanicalReduction>1</mechanicalReduction>
-    	  </actuator>
-  	 </transmission>
-</xacro:macro>
 
-<xacro:wheel postfix="FL" side="-1" front="1"/>
-<xacro:wheel postfix="FR" side="1" front="1"/>
-<xacro:wheel postfix="BL" side="-1" front="-1"/>
-<xacro:wheel postfix="BR" side="1" front="-1"/>
+        <!-- Wheel transmissions -->
+        <transmission name="tran_${postfix}">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="wheel_${postfix}_joint">
+                <hardwareInterface>VelocityJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_${postfix}">
+                <hardwareInterface>VelocityJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
 
-<!-- 3D Sensors -->
-<xacro:include filename="$(find tacbot_description)/urdf/kinect.xacro"/>
-<sensor_kinect  parent="base_link"/>
+    <xacro:wheel postfix="FL" side="-1" front="1"/>
+    <xacro:wheel postfix="FR" side="1" front="1"/>
+    <xacro:wheel postfix="BL" side="-1" front="-1"/>
+    <xacro:wheel postfix="BR" side="1" front="-1"/>
 
+    <!-- 3D Sensors -->
+    <xacro:include filename="$(find tacbot_description)/urdf/kinect.xacro"/>
+    <sensor_kinect  parent="base_link"/>
 
-   <!-- Kobuki Gazebo simulation details  -->
-	<xacro:include filename="$(find tacbot_description)/urdf/robot_gazebo.xacro"/>
-    <tacbot_sim/> 
-	<tacbot_3dsensor_sim/>
+    <!-- Kobuki Gazebo simulation details  -->
+    <xacro:include filename="$(find tacbot_description)/urdf/robot_gazebo.xacro"/>
+    <tacbot_sim/>
+    <tacbot_3dsensor_sim/>
+
 </robot>
