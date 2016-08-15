@@ -1,0 +1,22 @@
+<package format="2">
+  <name>tacbot_simulation</name>
+  <version>1.0.0</version>
+  <description>The fake driver for motors controller of mobile robot</description>
+  <author>Michal Drwiega</author>
+  <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>
+  <license>BSD</license>
+  <url type="website">http://www.mdrwiega.com</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>tf2_ros</depend>
+  <depend>gazebo_ros</depend>
+  <depend>gazebo_plugins</depend>
+
+</package>
