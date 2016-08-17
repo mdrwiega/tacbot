@@ -1,0 +1,10 @@
+<launch>
+	<!-- Start wheels controller -->
+    <include file="$(find tacbot_launch)/launch/drive_controller.launch"/>
+
+    <!-- Run Kinect sensor driver -->
+    <include file="$(find tacbot_launch)/launch/kinect_driver.launch"/>
+
+    <!-- Run IMU driver -->
+    <include file="$(find tacbot_launch)/launch/imu_orientus.launch"/>
+</launch>

@@ -1,0 +1,9 @@
+<launch>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find tacbot_navigation)/maps/map1.yaml">
+<!--	<remap from="/map" to="/map2" /> 
+	<remap from="/map_metadata" to="/map_metadata2" /> -->
+	</node>
+<!--	  <node pkg="tf" type="static_transform_publisher" 
+         name="map_to_map2" args="0 0.0 0 0 0 0 
+         map map2 100" />-->
+</launch>

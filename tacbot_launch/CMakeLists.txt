@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8.11)
+project(tacbot_launch)
+
+find_package(catkin REQUIRED COMPONENTS)
+
+catkin_package()

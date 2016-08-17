@@ -1,0 +1,10 @@
+output_frame_id: camera_depth_frame
+scan_height: 450
+range_min: 0.3
+range_max: 6.0
+calibration_update: false
+floor_remove: true
+floor_margin: 0.05
+tilt_compensation: false
+sensor_mount_height: 0.4
+sensor_tilt_angle: 18.0

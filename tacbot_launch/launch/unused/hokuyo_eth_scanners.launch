@@ -1,0 +1,53 @@
+<launch>
+  <!-- Hokuyo laser scanners start with the corresponding transformation publishers -->
+
+	<!-- Front Hokuyo start -->
+	<node name="hokuyo_front_node" pkg="urg_node" type="urg_node"> 
+		<remap from="scan" to="scan_front"/>
+		<remap from="echoes" to="echoes_front"/>
+		<remap from="first" to="first_front"/>
+		<remap from="last" to="last_front"/>
+		<remap from="most_intense" to="most_intense_front"/>
+		<remap from="diagnostics" to="diagnostics_front"/>
+		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_front.yaml"/>
+	</node>
+ 
+	<!-- Front Hokuyo transformation -->
+  <node name="base_link_to_front_laser" pkg="tf" type="static_transform_publisher" 
+        args="0.25 0.27 0.10 -2.335 3.14 0 wheels_base_link laser_front 100"/>
+
+	<!-- Front Hokuyo measurements cutter -->
+	<node pkg="carol_launch" type="laserscan_cutter.py" 
+				name="front_laser_cutter" output="screen">
+		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_front.yaml"/>
+	</node>
+
+
+	<!-- Back Hokuyo start -->
+	<node name="hokuyo_back_node" pkg="urg_node" type="urg_node"> 
+		<remap from="scan" to="scan_back"/>
+		<remap from="echoes" to="echoes_back"/>
+		<remap from="first" to="first_back"/>
+		<remap from="last" to="last_back"/>
+		<remap from="most_intense" to="most_intense_back"/>
+		<remap from="diagnostics" to="diagnostics_back"/>
+		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_back.yaml"/>
+	</node> 
+
+	<!-- Back Hokuyo transformation -->
+  <node name="base_link_to_back_laser" pkg="tf" type="static_transform_publisher" 
+        args="-0.25 -0.27 0.10 0.785 3.14 0 wheels_base_link laser_back 100"/>
+
+	<!-- Back Hokuyo measurements cutter -->
+	<node pkg="carol_launch" type="laserscan_cutter.py" 
+				name="back_laser_cutter" output="screen">
+		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_back.yaml"/>
+	</node>
+
+
+	<!-- Laser scans merger - ira laser tools 
+	<include file="$(find carol_launch)/launch/laserscan_multi_merger.launch"/>  -->
+
+</launch>
+
+

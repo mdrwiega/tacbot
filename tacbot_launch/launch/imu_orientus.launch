@@ -1,0 +1,12 @@
+<launch>
+
+	<!-- Run IMU Orientus driver with corresponding transformation-->
+	<node name="imu_orientus" pkg="orientus_driver" type="orientus_node">		
+		<param name="frame_id" value="imu"/>
+	</node>
+
+  <node name="wheels_base_link_to_imu" pkg="tf" type="static_transform_publisher" 
+        args="0.1 0.0 0.25 0 0 0 wheels_base_link imu 100" />
+</launch>
+
+

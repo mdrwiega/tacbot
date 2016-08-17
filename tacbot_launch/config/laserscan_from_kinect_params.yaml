@@ -1,0 +1,11 @@
+scan_height: 100
+scan_time: 0.05
+range_min: 0.5
+range_max: 5.0
+rangeMin: 0.5
+rangeMax: 4.0
+output_frame_id: camera_depth_frame
+floor_remove: true
+tilt_compensation: true
+sensor_mount_height: 1.2
+sensor_tilt_angle: -5.0

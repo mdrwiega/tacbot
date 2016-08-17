@@ -1,0 +1,37 @@
+<launch>
+	<!-- Lower Kinect start with the corresponding transformation publisher -->
+	<node name="wheels_base_link_to_kinect_l" pkg="tf" type="static_transform_publisher" 
+        args="0.1 0.0 0.45 0 0 0 wheels_base_link kinect_l_link 100"/>
+
+  <include file="$(find carol_launch)/launch/kinect_lower.launch"/>
+
+
+  <!-- Conversion depth image from Kinect sensor to laserscan -->
+	<node name="laserscan_kinect_l" pkg="laserscan_kinect" type="laserscan_kinect"> 
+	  	<remap from="image" to="/kinect_l/depth/image_raw"/>
+	  	<remap from="camera_info" to="/kinect_l/depth/camera_info"/>
+		 	<remap from="scan" to="/scan_kinect_l"/>
+		<rosparam command="load" 
+             file="$(find carol_launch)/config/laserscan_kinect_l_params.yaml"/>
+	</node> 
+
+	<!-- Upper Kinect start with the corresponding transformation publisher   -->
+	<node name="wheels_base_link_to_kinect_u" pkg="tf" type="static_transform_publisher"
+        args="0.1 0.0 1.3 0 0 0 wheels_base_link kinect_u_link 100"/>
+
+  <include file="$(find carol_launch)/launch/kinect_upper.launch"/>
+
+  <!-- Conversion depth image from Kinect sensor to laserscan -->
+	<node name="laserscan_kinect_u" pkg="laserscan_kinect" type="laserscan_kinect"> 
+	  	<remap from="image" to="/kinect_u/depth/image_raw"/>
+	  	<remap from="camera_info" to="/kinect_u/depth/camera_info"/>
+		 	<remap from="scan" to="/scan_kinect_u"/>
+		<rosparam command="load" 
+             file="$(find carol_launch)/config/laserscan_kinect_u_params.yaml"/>
+	</node>
+
+	<!-- Hokuyo scanner start with the corresponding transformation publisher -->
+  <include file="$(find carol_launch)/launch/hokuyo_eth_scanners.launch"/>
+</launch>
+
+

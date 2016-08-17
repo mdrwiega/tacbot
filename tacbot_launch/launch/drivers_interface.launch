@@ -1,0 +1,13 @@
+<launch>
+  <arg name="real_robot" default="false" />
+
+	<!-- Run real hardware drivers -->
+	<group if="$(arg real_robot)">
+		<include file="$(find tacbot_launch)/launch/hardware_drivers.launch"/>
+	</group>
+
+	<!-- Run Gazebo simulation -->
+	<group unless="$(arg real_robot)">
+		<include file="$(find tacbot_simulation)/launch/world1.launch"/>
+	</group>
+</launch>

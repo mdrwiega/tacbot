@@ -1,0 +1,31 @@
+# Common for mono_odometer and stereo_odometer
+# Tf related parameters
+odom_frame_id: odom
+base_link_frame_id: base_link
+publish_tf: false
+sensor_frame_id: camera_rgb_optical_frame
+
+# Bucketing parameters
+max_features: 2
+bucket_width: 40.0
+bucket_height: 40.0
+
+# Matcher parameters
+nms_n: 3
+nms_tau: 50
+match_binsize: 50
+match_radius: 100
+match_disp_tolerance: 2
+outlier_disp_tolerance: 2
+outlier_flow_tolerance: 5
+multi_stage: 1
+half_resolution: 1
+refinement: 1
+
+# Only mono_odometer parameters
+camera_height: 0.4
+camera_pitch: 0.0
+ransac_iters: 2000
+inlier_threshold: 0.00001
+motion_threshold: 10.0
+

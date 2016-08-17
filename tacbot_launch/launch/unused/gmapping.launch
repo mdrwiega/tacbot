@@ -1,0 +1,21 @@
+<launch>
+	<!-- Start orocos components -->	 
+	<include file="$(find carol_launch)/launch/carol_deployer.launch"/>
+
+	<!-- Run robot velocity commands multiplexer -->
+	<include file="$(find carol_launch)/launch/cmd_vel_mux.launch"/>
+
+  <!--  Run velocity commands filter -->
+  <include file="$(find carol_launch)/launch/velocity_filter.launch"/>
+	<!-- Run Hokuyo laser scanner -->
+	<include file="$(find carol_launch)/launch/hokuyo_scanner.launch"/>
+
+  <!-- Run gmapping algorithm -->
+  <node name="gmapping" pkg="gmapping" type="slam_gmapping">
+    <param name="base_frame" value="wheels_base_link"/>
+    <param name="map_frame"  value="map"/>
+    <param name="odom_frame" value="wheels_odom"/>
+  </node>
+</launch>
+
+

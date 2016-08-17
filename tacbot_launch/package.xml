@@ -1,0 +1,13 @@
+<package format="2">
+  <name>tacbot_launch</name>
+  <version>1.0.0</version>
+  <description>
+	Launchers for mobile robot Tacbot.
+  </description>
+  <author>Michal Drwiega</author>
+  <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>
+  <license>BSD</license>
+  <url type="website">http://www.mdrwiega.com</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>

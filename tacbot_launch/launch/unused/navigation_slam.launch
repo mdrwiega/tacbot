@@ -1,0 +1,6 @@
+<launch>
+	<!-- Run platform drivers and sensors -->
+	<include file="$(find tacbot_launch)/launch/platform_with_sensors.launch"/>
+	<!-- Run navigation package -->
+	<include file="$(find tacbot_navigation)/launch/navigation_slam.launch"/>
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+	<!-- Run the viso2_ros package -->
+	<node name="visual_odometry" pkg="viso2_ros" type="mono_odometer"  		
+			output="screen">
+
+		<remap from="image" to="camera/rgb/image_color"/>
+		<remap from="camera_info" to="camera/rgb/camera_info"/>
+
+		<rosparam command="load" 
+					 file="$(find tacbot_launch)/config/visual_odometry_params.yaml"/>
+	</node>	
+</launch>

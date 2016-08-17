@@ -1,0 +1,25 @@
+<launch>
+	<!-- Load robot model and state publishers -->
+	<param name="robot_description" textfile="$(find tacbot_launch)/urdf/robot.urdf"/>
+	<node name="joint_state_publisher" 
+			pkg="joint_state_publisher" type="joint_state_publisher" />
+	<node name="robot_state_publisher" 
+			pkg="robot_state_publisher" type="state_publisher"/> 
+	 
+	<!-- Start controller manager node -->
+	<node machine="rpi" name="tacbot_controller_manager"
+			pkg="tacbot_control" type="tacbot_control_node">
+			<remap from="/base_controller/cmd_vel" to="/cmd_vel" />
+			<remap from="/base_controller/odom" to="/wheels_odom" />
+	</node>
+	
+	<!-- Load controller configuration -->	
+	<rosparam command="load" file="$(find tacbot_launch)/config/diff_drive.yaml" />
+
+	<!-- Load base_controller to controller manager -->
+	<node machine="rpi" name="controller_spawner" 
+			pkg="controller_manager" type="spawner" 
+			args="base_controller"/>
+</launch>
+
+

@@ -1,0 +1,10 @@
+<launch>
+	<!-- Start orocos components -->	 
+	<include file="$(find carol_launch)/launch/carol_deployer.launch"/>
+
+	<!-- Run robot velocity commands multiplexer -->
+	<include file="$(find carol_launch)/launch/cmd_vel_mux.launch"/>
+
+  <!--  Run velocity commands filter -->
+  <include file="$(find carol_launch)/launch/velocity_filter.launch"/>
+</launch>

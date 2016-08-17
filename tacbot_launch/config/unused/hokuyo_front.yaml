@@ -1,0 +1,19 @@
+# Front Hokuyo laser scanner setting
+#ip_address: "192.168.12.50"
+serial_port:  "/dev/ttyACM1"
+
+frame_id: laser_front
+publish_intensity: false
+publish_multiecho: false
+
+
+#==========================================================
+# Parameters for laserscan_cutter script
+#==========================================================
+scan_topic: "scan_front"
+scan_topic_new: "scan_front2"
+
+# Numbers of measurements to cut ( left -> min_angle, 
+#																   right -> max_angle)
+left_cnt: 170
+right_cnt: 120
