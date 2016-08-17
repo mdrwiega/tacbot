@@ -1,0 +1,11 @@
+<!-- Model of tacbot for Gazebo -->
+<launch>
+  <arg name="model" default="$(find tacbot_description)/urdf/robot.xacro"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+
+  <!-- Gazebo model spawner  -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-z 1.0 -unpause -urdf -model robot -param robot_description"
+        respawn="false" output="screen" />
+</launch>

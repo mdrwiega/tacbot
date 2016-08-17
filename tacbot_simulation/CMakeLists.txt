@@ -4,6 +4,8 @@ project(tacbot_simulation)
 set(CMAKE_CXX_FLAGS "-std=c++1y ${CMAKE_CXX_FLAGS} ")
 #set(CMAKE_BUILD_TYPE Release)
 
+#catkin_add_env_hooks(tacbot_sim SHELLS sh DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/env-hooks)
+
 find_package(gazebo REQUIRED)
 
 find_package ( catkin REQUIRED COMPONENTS
@@ -33,4 +35,13 @@ add_library(gazebo_ros_tacbot src/gazebo_ros_tacbot.cpp)
 target_link_libraries(gazebo_ros_tacbot ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 install(TARGETS gazebo_ros_tacbot
-        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+    DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+
+install(DIRECTORY launch
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+install(DIRECTORY maps
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+install(DIRECTORY worlds
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
