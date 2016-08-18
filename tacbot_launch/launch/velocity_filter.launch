@@ -1,17 +1,19 @@
 <launch>
-  <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager"/>
+    <arg name="prefix" default=""/>
 
-  <!--  Run velocity commands filter -->
-  <node name="velocity_filter" pkg="nodelet" type="nodelet"  
-		  args="load yocs_velocity_smoother/VelocitySmootherNodelet nodelet_manager">
+    <!--  Run nodelet -->
+    <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager"/>
 
-    <rosparam command="load" file="$(find tacbot_launch)/config/velocity_filter.yaml"/>
+    <!--  Run velocity commands filter -->
+    <node name="velocity_filter" pkg="nodelet" type="nodelet"
+          args="load yocs_velocity_smoother/VelocitySmootherNodelet nodelet_manager">
 
-    <remap from="velocity_filter/raw_cmd_vel" to="raw_cmd_vel"/>
-    <remap from="velocity_filter/smooth_cmd_vel" to="cmd_vel"/>
+        <rosparam command="load" file="$(find tacbot_launch)/config/velocity_filter.yaml"/>
 
-    <!-- Robot velocity feedbacks from odometry -->
-    <remap from="velocity_filter/odometry" to="odom"/>
-  </node>
+        <remap from="velocity_filter/raw_cmd_vel" to="$(arg prefix)/raw_cmd_vel"/>
+        <remap from="velocity_filter/smooth_cmd_vel" to="$(arg prefix)/cmd_vel"/>
+        <!-- Velocity feedback -->
+        <remap from="velocity_filter/odometry" to="$(arg prefix)/odom"/>
+    </node>
 </launch>
 

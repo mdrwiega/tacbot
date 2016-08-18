@@ -99,7 +99,7 @@ void GazeboRosTacbot::setupRosPubAndSub()
     joint_state_pub_ = ros_node_->advertise<sensor_msgs::JointState>(joint_states_topic, 1);
     ROS_INFO_STREAM(ros_node_->getNamespace() << ": Advertise joint_states[" << joint_states_topic << "].");
 
-    std::string odom_topic = "/" + model_->GetName() + "/odom";
+    std::string odom_topic = "/" + model_->GetName() + "/odom_raw";
     pub_odom_ = ros_node_->advertise<nav_msgs::Odometry>(odom_topic, 1);
     ROS_INFO_STREAM(ros_node_->getNamespace() << ": Advertise Odometry[" << odom_topic << "].");
 
@@ -217,7 +217,7 @@ bool GazeboRosTacbot::parseOtherSdfParameters()
 //=================================================================================================
 void GazeboRosTacbot::publishJointState()
 {
-    std::string baselink_frame = "base_link";
+    std::string baselink_frame = model_->GetName() + "_base_link";
     joint_state_.header.stamp = ros::Time::now();
     joint_state_.header.frame_id = baselink_frame;
 
@@ -232,8 +232,8 @@ void GazeboRosTacbot::publishJointState()
 //=================================================================================================
 void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 {
-    std::string odom_frame = "odom";
-    std::string base_frame = "base_link";
+    std::string odom_frame =  model_->GetName() + "_odom_raw";
+    std::string base_frame = model_->GetName() + "_base_link";
 
     nav_msgs::Odometry odom_msg; // ROS message for odometry data
 

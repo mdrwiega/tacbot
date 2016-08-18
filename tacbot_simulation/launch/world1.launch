@@ -1,5 +1,5 @@
 <launch>
-
+  <arg name="robot_prefix" default="r1"/>
   <arg name="model" default="tacbot"/>
   <arg name="world" default="/worlds/empty.world"/>
   <arg name="paused" default="false"/>
@@ -10,7 +10,7 @@
 
 	<!-- Run empty world gazebo example with robot -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="world" />
+<!--    <arg name="world_name" value="world" /> -->
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -19,20 +19,11 @@
   </include>
 
 	<!-- Spawn robot in Gazebo world -->
-  <include file="$(find tacbot_simulation)/launch/includes/$(arg model).launch.xml"/>
+  <include file="$(find tacbot_simulation)/launch/includes/$(arg model).launch.xml">
+    <arg name="robot_prefix" value="$(arg robot_prefix)"/>
+  </include>
 
   <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
-
-  <!-- Fake laser 
-  <node pkg="nodelet" type="nodelet" name="laserscan_nodelet_manager" args="manager"/>
-  <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan"
-        args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet laserscan_nodelet_manager">
-    <param name="scan_height" value="10"/>
-    <param name="output_frame_id" value="/camera_depth_frame"/>
-    <param name="range_min" value="0.45"/>
-    <remap from="image" to="/camera/depth/image_raw"/>
-    <remap from="scan" to="/scan"/>
-  </node>-->
 </launch>

@@ -3,6 +3,7 @@
 <robot name="tacbot" xmlns:xacro="http://ros.org/wiki/xacro">
 
     <!-- Constants-->
+	 <xacro:property name="prefix"		 value="r1"/>
     <xacro:property name="base_length"  value=".297"/>
     <xacro:property name="base_width"   value=".189"/>
     <xacro:property name="base_height"  value=".06"/>
@@ -11,18 +12,18 @@
     <xacro:property name="wheel_dis"    value=".0235"/>
 
     <!-- Base dummy link -->
-    <link name="base_footprint"/>
-    <joint name="base_joint" type="fixed">
+    <link name="${prefix}_base_footprint"/>
+    <joint name="${prefix}_base_joint" type="fixed">
       <origin xyz="0 0 0.0" rpy="0 0 0" />
-      <parent link="base_footprint"/>
-      <child link="base_link" />
+      <parent link="${prefix}_base_footprint"/>
+      <child link="${prefix}_base_link" />
     </joint>
 
     <!-- Base link definition-->
     <xacro:macro name="base_box"> <box size="${base_length} ${base_width} ${base_height}"/> </xacro:macro>
     <xacro:macro name="base_origin"> <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/> </xacro:macro>
 
-    <link name="base_link">
+    <link name="${prefix}_base_link">
         <visual>
             <geometry>
                 <xacro:base_box/>
@@ -47,7 +48,7 @@
 
     <!-- Wheel links -->
     <xacro:macro name="wheel" params="postfix side front">
-        <link name="wheel_${postfix}">
+        <link name="${prefix}_wheel_${postfix}">
             <visual>
                 <geometry>
                     <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
@@ -70,9 +71,9 @@
         </link>
 
         <!-- Wheel joints -->
-        <joint name="wheel_${postfix}_joint" type="continuous">
-            <parent link="base_link"/>
-            <child link="wheel_${postfix}"/>
+        <joint name="${prefix}_wheel_${postfix}_joint" type="continuous">
+            <parent link="${prefix}_base_link"/>
+            <child link="${prefix}_wheel_${postfix}"/>
             <origin xyz="${front*(base_length/2-wheel_dis)} ${side*(base_width/2+wheel_width/2)} ${wheel_radius}"
                     rpy="${pi/2} 0 0"/>
             <axis xyz="0 0 1"/>
@@ -82,12 +83,12 @@
         </joint>
 
         <!-- Wheel transmissions -->
-        <transmission name="tran_${postfix}">
+        <transmission name="${prefix}_tran_${postfix}">
             <type>transmission_interface/SimpleTransmission</type>
-            <joint name="wheel_${postfix}_joint">
+            <joint name="${prefix}_wheel_${postfix}_joint">
                 <hardwareInterface>VelocityJointInterface</hardwareInterface>
             </joint>
-            <actuator name="motor_${postfix}">
+            <actuator name="${prefix}_motor_${postfix}">
                 <hardwareInterface>VelocityJointInterface</hardwareInterface>
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
@@ -101,11 +102,11 @@
 
     <!-- 3D Sensors -->
     <xacro:include filename="$(find tacbot_description)/urdf/kinect.xacro"/>
-    <sensor_kinect  parent="base_link"/>
+    <sensor_kinect prefix="${prefix}" parent="${prefix}_base_link"/>
 
-    <!-- Kobuki Gazebo simulation details  -->
+    <!-- Kobuki Gazebo simulation details   -->
     <xacro:include filename="$(find tacbot_description)/urdf/robot_gazebo.xacro"/>
-    <tacbot_sim/>
-    <tacbot_3dsensor_sim/>
+    <xacro:tacbot_sim prefix="${prefix}"/>
+    <tacbot_3dsensor_sim prefix="${prefix}"/>
 
 </robot>

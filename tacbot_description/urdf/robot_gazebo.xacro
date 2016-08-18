@@ -2,8 +2,8 @@
 
 <robot name="tacbot_sim" xmlns:xacro="http://ros.org/wiki/xacro">
     <!-- Wheels macro -->
-    <xacro:macro name="wheel_sim" params="postfix">
-        <gazebo reference="wheel_${postfix}">
+    <xacro:macro name="wheel_sim" params="prefix postfix">
+        <gazebo reference="${prefix}_wheel_${postfix}">
             <mu1>1.0</mu1>
             <mu2>1.0</mu2>
             <kp>100000.0</kp>
@@ -12,31 +12,29 @@
             <maxVel>1.0</maxVel>
             <material>Gazebo/Black</material>
         </gazebo>
-
-        <gazebo reference="wheel_${postfix}_joint"/>
     </xacro:macro>
 
-    <xacro:macro name="tacbot_sim">
+    <xacro:macro name="tacbot_sim" params="prefix">
         <!-- Base link -->
-        <gazebo reference="base_link">
+        <gazebo reference="${prefix}_base_link">
             <mu1>0.3</mu1>
             <mu2>0.3</mu2>
             <material>Gazebo/Grey</material>
         </gazebo>
 
         <!-- Wheels -->
-        <xacro:wheel_sim postfix="FL"/>
-        <xacro:wheel_sim postfix="FR"/>
-        <xacro:wheel_sim postfix="BL"/>
-        <xacro:wheel_sim postfix="BR"/>
+        <xacro:wheel_sim prefix="${prefix}" postfix="FL"/>
+        <xacro:wheel_sim prefix="${prefix}" postfix="FR"/>
+        <xacro:wheel_sim prefix="${prefix}" postfix="BL"/>
+        <xacro:wheel_sim prefix="${prefix}" postfix="BR"/>
 
         <!-- Tacbot controller plugin for Gazebo -->
         <gazebo>
             <plugin name="tacbot_controller" filename="libgazebo_ros_tacbot.so">
-                <wheel_BL_joint_name>wheel_BL_joint</wheel_BL_joint_name>
-                <wheel_BR_joint_name>wheel_BR_joint</wheel_BR_joint_name>
-                <wheel_FL_joint_name>wheel_FL_joint</wheel_FL_joint_name>
-                <wheel_FR_joint_name>wheel_FR_joint</wheel_FR_joint_name>
+                <wheel_BL_joint_name>${prefix}_wheel_BL_joint</wheel_BL_joint_name>
+                <wheel_BR_joint_name>${prefix}_wheel_BR_joint</wheel_BR_joint_name>
+                <wheel_FL_joint_name>${prefix}_wheel_FL_joint</wheel_FL_joint_name>
+                <wheel_FR_joint_name>${prefix}_wheel_FR_joint</wheel_FR_joint_name>
                 <reg_kp>2.0</reg_kp>
                 <reg_ki>0</reg_ki>
                 <reg_kd>0</reg_kd>
@@ -50,8 +48,8 @@
     </xacro:macro>
 
     <!-- Microsoft Kinect for simulation -->
-    <xacro:macro name="tacbot_3dsensor_sim">
-        <gazebo reference="camera_link">
+    <xacro:macro name="tacbot_3dsensor_sim" params="prefix">
+        <gazebo reference="${prefix}_camera_link">
         <sensor type="depth" name="camera">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
@@ -68,15 +66,15 @@
             </clip>
         </camera>
         <plugin name="kinect_camera_controller" filename="libgazebo_ros_openni_kinect.so">
-            <cameraName>camera</cameraName>
+            <cameraName>kinect</cameraName>
             <alwaysOn>true</alwaysOn>
             <updateRate>10</updateRate>
-            <imageTopicName>rgb/image_raw</imageTopicName>
-            <depthImageTopicName>depth/image_raw</depthImageTopicName>
-            <pointCloudTopicName>depth/points</pointCloudTopicName>
-            <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
-            <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
-            <frameName>camera_depth_optical_frame</frameName>
+            <imageTopicName>${prefix}/rgb/image_raw</imageTopicName>
+            <depthImageTopicName>${prefix}/depth/image_raw</depthImageTopicName>
+            <pointCloudTopicName>${prefix}/depth/points</pointCloudTopicName>
+            <cameraInfoTopicName>${prefix}/rgb/camera_info</cameraInfoTopicName>
+            <depthImageCameraInfoTopicName>${prefix}/depth/camera_info</depthImageCameraInfoTopicName>
+            <frameName>${prefix}_camera_depth_optical_frame</frameName>
             <baseline>0.1</baseline>
             <distortion_k1>0.0</distortion_k1>
             <distortion_k2>0.0</distortion_k2>
