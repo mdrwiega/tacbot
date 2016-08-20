@@ -35,18 +35,12 @@
  */
 
 #include <cmath>
-#include <functional>
 
 #include <gazebo_ros_tacbot.h>
 
-#include <tf/LinearMath/Quaternion.h>
+#include <tf/transform_datatypes.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <nav_msgs/Odometry.h>
-
-#include <gazebo/common/PID.hh>
-#include <gazebo_plugins/gazebo_ros_utils.h>
-#include <gazebo/math/gzmath.hh>
-
 
 namespace gazebo {
 
@@ -62,8 +56,6 @@ GazeboRosTacbot::~GazeboRosTacbot()
 //=================================================================================================
 void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
 {
-    //    ros_node_.reset(new ros::NodeHandle("gazebo_ros_tacbot"));
-
     world_ = parent->GetWorld();
     sdf_ = sdf;
     model_ = parent;
@@ -269,19 +261,11 @@ void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
     odom_pose_[1] += d_lin * sin( direction );
     odom_pose_[2] += d_ang;
 
-    std::array<double,3> odom_vel_ = { d_lin / step_time.Double(),
-                                       d_ang / step_time.Double(), 0.0 };
-
     odom_msg.pose.pose.position.x = odom_pose_[0];
     odom_msg.pose.pose.position.y = odom_pose_[1];
     odom_msg.pose.pose.position.z = 0;
 
-    tf::Quaternion qt;
-    qt.setEuler(0,0,odom_pose_[2]);
-    odom_msg.pose.pose.orientation.x = qt.getX();
-    odom_msg.pose.pose.orientation.y = qt.getY();
-    odom_msg.pose.pose.orientation.z = qt.getZ();
-    odom_msg.pose.pose.orientation.w = qt.getW();
+    odom_msg.pose.pose.orientation = tf::createQuaternionMsgFromYaw(odom_pose_[2]);
 
     odom_msg.pose.covariance[0]  = 0.1;
     odom_msg.pose.covariance[7]  = 0.1;
@@ -290,12 +274,12 @@ void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
     odom_msg.pose.covariance[21] = 1e6;
     odom_msg.pose.covariance[28] = 1e6;
 
-    odom_msg.twist.twist.linear.x = odom_vel_[0];
+    odom_msg.twist.twist.linear.x = d_lin / step_time.Double();
     odom_msg.twist.twist.linear.y = 0;
     odom_msg.twist.twist.linear.z = 0;
     odom_msg.twist.twist.angular.x = 0;
     odom_msg.twist.twist.angular.y = 0;
-    odom_msg.twist.twist.angular.z = odom_vel_[2];
+    odom_msg.twist.twist.angular.z = d_ang / step_time.Double();
 
     pub_odom_.publish(odom_msg);
 

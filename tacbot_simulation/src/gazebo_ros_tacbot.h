@@ -47,7 +47,6 @@
 #include <tf2_ros/transform_broadcaster.h>
 
 #include <gazebo/gazebo_client.hh>
-#include <gazebo/common/Time.hh>
 #include <gazebo/physics/physics.hh>
 
 namespace gazebo {
