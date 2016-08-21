@@ -34,6 +34,8 @@
  * @brief  The Gazebo plugin for Tacbot IMU.
  */
 
+#include "gazebo_tacbot_imu.h"
+
 #include <sensor_msgs/Imu.h>
 
 #include "gazebo/math/Vector3.hh"
@@ -42,8 +44,6 @@
 #include <gazebo/physics/Model.hh>
 #include <gazebo/sensors/SensorsIface.hh>
 #include <gazebo/sensors/ImuSensor.hh>
-
-#include <gazebo_tacbot_imu.h>
 
 namespace gazebo {
 
@@ -86,8 +86,8 @@ void GazeboTacbotIMU::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
 void GazeboTacbotIMU::setupRosPubAndSub()
 {
     const std::string imu_topic = "/" + model_->GetName() + "/" + topic_name_;
-    pub_imu_ = ros_node_->advertise<sensor_msgs::Imu>(imu_topic, 1);
-    ROS_INFO_STREAM(ros_node_->getNamespace() << ": Advertise IMU[" << imu_topic << "].");
+    pub_imu_ = ros_node_.advertise<sensor_msgs::Imu>(imu_topic, 1);
+    ROS_INFO_STREAM(ros_node_.getNamespace() << ": Advertise IMU[" << imu_topic << "].");
 }
 
 //=================================================================================================

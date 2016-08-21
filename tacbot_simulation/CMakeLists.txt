@@ -11,16 +11,16 @@ find_package(gazebo REQUIRED)
 find_package ( catkin REQUIRED COMPONENTS
     roscpp
     std_msgs sensor_msgs geometry_msgs nav_msgs
-    tf tf2_ros gazebo_ros gazebo_plugins
+    tf tf2_ros gazebo_ros
     )
 
 catkin_package (
     INCLUDE_DIRS src
-    LIBRARIES DriveControllerNode
+    LIBRARIES
     CATKIN_DEPENDS
     roscpp
     std_msgs sensor_msgs geometry_msgs nav_msgs
-    tf tf2_ros gazebo_ros gazebo_plugins
+    tf tf2_ros gazebo_ros
     )
 
 include_directories ( 

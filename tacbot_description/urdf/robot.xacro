@@ -3,7 +3,7 @@
 <robot name="tacbot" xmlns:xacro="http://ros.org/wiki/xacro">
 
     <!-- Constants-->
-	 <xacro:property name="prefix"		 value="r1"/>
+	<xacro:property name="prefix"		value="$(arg prefix)"/>
     <xacro:property name="base_length"  value=".297"/>
     <xacro:property name="base_width"   value=".189"/>
     <xacro:property name="base_height"  value=".06"/>

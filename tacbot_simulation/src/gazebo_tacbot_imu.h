@@ -37,9 +37,8 @@
 #pragma once
 
 #include <string>
-#include <memory>
 
-#include <ros/ros.h>
+#include <ros/node_handle.h>
 
 #include <gazebo/common/Plugin.hh>
 
@@ -51,7 +50,7 @@ namespace gazebo {
 class GazeboTacbotIMU  : public ModelPlugin
 {
 public:
-    GazeboTacbotIMU() : ros_node_(std::make_unique<ros::NodeHandle>("gazebo_tacbot_imu")) { }
+    GazeboTacbotIMU() = default;
     ~GazeboTacbotIMU();
 
 private:
@@ -68,17 +67,16 @@ private:
 
 private:
     //---------------------------------------------------------------------------------------------
-    physics::ModelPtr model_;                   ///< Pointer to the model
-    sdf::ElementPtr sdf_;                       ///< Pointer the the SDF element of the plugin.
-    event::ConnectionPtr update_connection_;    ///< Pointer to the update event connection
-    sensors::ImuSensorPtr imu_;                 ///< Pointer to IMU sensor model
+    physics::ModelPtr model_;                       ///< Pointer to the model
+    sdf::ElementPtr sdf_;                           ///< Pointer the the SDF element of the plugin.
+    event::ConnectionPtr update_connection_;        ///< Pointer to the update event connection
+    sensors::ImuSensorPtr imu_;                     ///< Pointer to IMU sensor model
 
-    std::unique_ptr<ros::NodeHandle> ros_node_; ///< A node use for ROS transport
+    ros::NodeHandle ros_node_{"gazebo_tacbot_imu"}; ///< A node use for ROS transport
+    ros::Publisher  pub_imu_;                       ///< IMU data publisher
 
-    ros::Publisher  pub_imu_;                   ///< IMU data publisher
-
-    std::string frame_name_{"imu_link"};        ///< Name of IMU sensor frame
-    std::string topic_name_{"imu_raw"};         ///< IMU publisher topic
+    std::string frame_name_{"imu_link"};            ///< Name of IMU sensor frame
+    std::string topic_name_{"imu_raw"};             ///< IMU publisher topic
 };
 
 }

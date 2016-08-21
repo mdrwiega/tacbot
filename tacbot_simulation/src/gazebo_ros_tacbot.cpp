@@ -1,7 +1,7 @@
 /******************************************************************************
  * Software License Agreement (BSD License)
  *
- * Copyright (c) 2015, Michal Drwiega (drwiega.michal@gmail.com)
+ * Copyright (c) 2017, Michal Drwiega (drwiega.michal@gmail.com)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,12 @@
 /**
  * @file   gazebo_ros_tacbot.cpp
  * @author Michal Drwiega (drwiega.michal@gmail.com)
- * @date   10.2015
- * @brief  tacbot simulation
+ * @brief  The Gazebo plugin for Tacbot robot with the control system in ROS.
  */
 
-#include <cmath>
-
 #include <gazebo_ros_tacbot.h>
+
+#include <cmath>
 
 #include <tf/transform_datatypes.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -70,6 +69,7 @@ void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
         ROS_ERROR_STREAM("Invalid model pointer! [" << model_->GetName() << "]");
         return;
     }
+
     if (!ros::isInitialized())
     {
         ROS_FATAL_STREAM("Unable to load Gazebo plugin");
@@ -77,8 +77,7 @@ void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
     }
 
     // Name of the parent model used as node name
-    std::string model_name = sdf->GetParent()->Get<std::string>("name");
-    gzdbg << "Plugin model name: " << model_name << "\n";
+    gzdbg << "Plugin model name: " << sdf->GetParent()->Get<std::string>("name") << "\n";
 
     if(!parseSdfAndSetupWheelJoints() || !parseOtherSdfParameters()) return;
 
@@ -92,27 +91,27 @@ void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
 //=================================================================================================
 void GazeboRosTacbot::setupRosPubAndSub()
 {
-    std::string joint_states_topic = "/" + model_->GetName() + "/joint_states";
-    joint_state_pub_ = ros_node_->advertise<sensor_msgs::JointState>(joint_states_topic, 1);
-    ROS_INFO_STREAM(ros_node_->getNamespace() << ": Advertise joint_states[" << joint_states_topic << "].");
+    std::string joint_states_topic = model_->GetName() + "/joint_states";
+    joint_state_pub_ = ros_node_.advertise<sensor_msgs::JointState>(joint_states_topic, 1);
+    ROS_DEBUG_STREAM(ros_node_.getNamespace() << ": Advertise joint_states[" << joint_states_topic << "].");
 
-    std::string odom_topic = "/" + model_->GetName() + "/odom_raw";
-    pub_odom_ = ros_node_->advertise<nav_msgs::Odometry>(odom_topic, 1);
-    ROS_INFO_STREAM(ros_node_->getNamespace() << ": Advertise Odometry[" << odom_topic << "].");
+    std::string odom_topic = model_->GetName() + "/odom_raw";
+    pub_odom_ = ros_node_.advertise<nav_msgs::Odometry>(odom_topic, 1);
+    ROS_DEBUG_STREAM(ros_node_.getNamespace() << ": Advertise Odometry[" << odom_topic << "].");
 
-    std::string odom_reset_topic = "/" + model_->GetName() + "/reset_odometry";
-    odom_reset_sub_ = ros_node_->subscribe(odom_reset_topic, 10, &GazeboRosTacbot::resetOdomCB, this);
-    ROS_INFO_STREAM(ros_node_->getNamespace() << ": Subscribe to " << odom_reset_topic << ".");
+    std::string odom_reset_topic = model_->GetName() + "/reset_odometry";
+    odom_reset_sub_ = ros_node_.subscribe(odom_reset_topic, 10, &GazeboRosTacbot::resetOdomCB, this);
+    ROS_DEBUG_STREAM(ros_node_.getNamespace() << ": Subscribe to " << odom_reset_topic << ".");
 
-    std::string cmd_vel_topic = "/" + model_->GetName() + "/cmd_vel";
-    sub_cmd_vel_ = ros_node_->subscribe(cmd_vel_topic, 10, &GazeboRosTacbot::cmdVelocitiesCb, this);
-    ROS_INFO_STREAM(ros_node_->getNamespace() << ": Subscribe to " << cmd_vel_topic << ".");
+    std::string cmd_vel_topic = model_->GetName() + "/cmd_vel";
+    sub_cmd_vel_ = ros_node_.subscribe(cmd_vel_topic, 10, &GazeboRosTacbot::cmdVelocitiesCb, this);
+    ROS_DEBUG_STREAM(ros_node_.getNamespace() << ": Subscribe to " << cmd_vel_topic << ".");
 }
 
 //=================================================================================================
 void GazeboRosTacbot::onUpdate()
 {
-    ros::spinOnce(); // Process ROS callbacks
+    ros::spinOnce();
 
     auto time_now = model_->GetWorld()->GetSimTime();
 
@@ -214,9 +213,8 @@ bool GazeboRosTacbot::parseOtherSdfParameters()
 //=================================================================================================
 void GazeboRosTacbot::publishJointState()
 {
-    std::string baselink_frame = model_->GetName() + "_base_link";
     joint_state_.header.stamp = ros::Time::now();
-    joint_state_.header.frame_id = baselink_frame;
+    joint_state_.header.frame_id = model_->GetName() + "_base_link";;
 
     for (int i = 0; i < WHEELS_COUNT; ++i)
     {
@@ -229,14 +227,11 @@ void GazeboRosTacbot::publishJointState()
 //=================================================================================================
 void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 {
-    std::string odom_frame =  model_->GetName() + "_odom_raw";
-    std::string base_frame = model_->GetName() + "_base_link";
-
     nav_msgs::Odometry odom_msg; // ROS message for odometry data
 
     odom_msg.header.stamp = joint_state_.header.stamp;
-    odom_msg.header.frame_id = odom_frame;
-    odom_msg.child_frame_id = base_frame;
+    odom_msg.header.frame_id = model_->GetName() + "_odom_raw";
+    odom_msg.child_frame_id = model_->GetName() + "_base_link";
 
     const auto left = (joints_[static_cast<int>(Wheel::BL)]->GetVelocity(0)
             + joints_[static_cast<int>(Wheel::FL)]->GetVelocity(0)) / 2;
@@ -304,7 +299,7 @@ void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 //=================================================================================================
 void GazeboRosTacbot::setJointsVelocities()
 {
-    for(int i = 0; i < WHEELS_COUNT; ++i)
+    for(size_t i = 0; i < WHEELS_COUNT; ++i)
     {
         model_->GetJointController()->SetVelocityTarget( joints_[i]->GetScopedName(),
                                                          wheel_speed_cmd_[i] / (wheel_diameter_ / 2.0));
@@ -315,5 +310,3 @@ void GazeboRosTacbot::setJointsVelocities()
 GZ_REGISTER_MODEL_PLUGIN(GazeboRosTacbot);
 
 }
-
-

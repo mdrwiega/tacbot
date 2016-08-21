@@ -19,6 +19,5 @@
   <depend>tf</depend>
   <depend>tf2_ros</depend>
   <depend>gazebo_ros</depend>
-  <depend>gazebo_plugins</depend>
 
 </package>

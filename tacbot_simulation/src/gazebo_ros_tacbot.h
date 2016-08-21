@@ -1,7 +1,7 @@
 /******************************************************************************
  * Software License Agreement (BSD License)
  *
- * Copyright (c) 2016, Michal Drwiega (drwiega.michal@gmail.com)
+ * Copyright (c) 2017, Michal Drwiega (drwiega.michal@gmail.com)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@
 /**
  * @file   gazebo_ros_tacbot.h
  * @author Michal Drwiega (drwiega.michal@gmail.com)
- * @date   2016
  * @brief  The Gazebo plugin for Tacbot robot with the control system in ROS.
  */
 
@@ -38,9 +37,8 @@
 
 #include <string>
 #include <array>
-#include <memory>
 
-#include <ros/ros.h>
+#include <ros/node_handle.h>
 #include <std_msgs/Empty.h>
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/Twist.h>
@@ -70,7 +68,7 @@ constexpr auto toString(const Wheel wheel) noexcept {
 class GazeboRosTacbot  : public ModelPlugin
 {
 public:
-    GazeboRosTacbot() : ros_node_(std::make_unique<ros::NodeHandle>("gazebo_ros_tacbot")) { }
+    GazeboRosTacbot() = default;
     ~GazeboRosTacbot();
 
 private:
@@ -97,27 +95,26 @@ private:
 
 private:
     //-----------------------------------------------------------------------------------------------
-
-    physics::ModelPtr model_;                       ///< Pointer to the model
+    physics::ModelPtr model_;                       ///< Pointer to the Gazebo model
     sdf::ElementPtr sdf_;                           ///< Pointer the the SDF element of the plugin.
     event::ConnectionPtr update_connection_;        ///< Pointer to the update event connection
     std::array<physics::JointPtr, WHEELS_COUNT> joints_;          ///< Pointers to Gazebo's joints
     std::array<double, WHEELS_COUNT> wheel_speed_cmd_{{0,0,0,0}}; ///< Desired speeds of wheels
 
-    std::unique_ptr<ros::NodeHandle> ros_node_;     ///< A node use for ROS transport
+    ros::NodeHandle ros_node_;                      ///< A node use for ROS transport
     sensor_msgs::JointState joint_state_;           ///< ROS message for joint sates
     std::string tf_prefix_;                         ///< TF Prefix
     common::Time prev_update_time_;                 ///< Simulation time on previous update
     std::array<double,3> odom_pose_{{0,0,0}};       ///< Odometry position
 
     // Publishers and subscribers
+    //-----------------------------------------------------------------------------------------------
     ros::Publisher  pub_odom_;                      ///< Odometry data publisher
     ros::Publisher  joint_state_pub_;               ///< Joint states publisher
     tf2_ros::TransformBroadcaster tf_broadcaster_;  ///< Broadcaster for tf odom publishing
     ros::Subscriber sub_cmd_vel_;                   ///< Velocity commands subscriber
     ros::Subscriber odom_reset_sub_;                ///< Subscriber for reseting the odometry data
 
-    //-----------------------------------------------------------------------------------------------
     // Parameters provided by robot urdf description (gazebo plugin parameters)
     //-----------------------------------------------------------------------------------------------
     double back_wheel_separation_{1.0};         ///< Back wheel separation in meters

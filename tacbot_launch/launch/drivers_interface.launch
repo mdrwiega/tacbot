@@ -12,7 +12,7 @@
 	<group unless="$(arg real_robot)">
         <include file="$(find tacbot_simulation)/launch/world1.launch">
             <arg name="robot_prefix" value="$(arg robot_prefix)"/>
-            <arg name="gui" value="false"/>
+            <arg name="gui" value="true"/>
         </include>
 	</group>
 
