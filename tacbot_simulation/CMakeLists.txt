@@ -34,6 +34,10 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 add_library(gazebo_ros_tacbot src/gazebo_ros_tacbot.cpp)
 target_link_libraries(gazebo_ros_tacbot ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_library(gazebo_tacbot_imu src/gazebo_tacbot_imu.cpp)
+target_link_libraries(gazebo_tacbot_imu ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
+
 install(TARGETS gazebo_ros_tacbot
     DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
 

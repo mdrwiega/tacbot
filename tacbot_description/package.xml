@@ -14,5 +14,7 @@
 
   <depend>urdf</depend>
   <depend>xacro</depend>
+  <depend>gazebo_plugins</depend>
+  <depend>tacbot_simulation</depend>
 
 </package>
