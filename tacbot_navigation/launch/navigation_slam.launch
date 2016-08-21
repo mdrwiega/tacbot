@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find tacbot_navigation)/launch/gmapping.launch"/>
+	<!-- Run costmaps and planners -->
+	<include file="$(find tacbot_navigation)/launch/move_base.launch"/>
+</launch>

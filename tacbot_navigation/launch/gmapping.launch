@@ -1,0 +1,6 @@
+<launch>
+	<!-- Run gmapping node -->
+  	<node name="gmapping" pkg="gmapping" type="slam_gmapping">
+			<rosparam file="$(find tacbot_navigation)/config/gmapping_params.yaml" command="load"/> 
+	</node>
+</launch>
