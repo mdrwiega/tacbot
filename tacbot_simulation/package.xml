@@ -1,7 +1,9 @@
 <package format="2">
   <name>tacbot_simulation</name>
   <version>1.0.0</version>
-  <description>The fake driver for motors controller of mobile robot</description>
+  <description>
+  The gazebo plugins for mobile robot Tacbot.
+  </description>
   <author>Michal Drwiega</author>
   <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>
   <license>BSD</license>
