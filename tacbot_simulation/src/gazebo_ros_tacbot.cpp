@@ -42,6 +42,12 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <nav_msgs/Odometry.h>
 
+#include <gazebo/physics/World.hh>
+#include <gazebo/physics/Model.hh>
+#include <gazebo/physics/Joint.hh>
+#include <gazebo/physics/JointController.hh>
+
+
 namespace gazebo {
 
 //=================================================================================================
@@ -56,7 +62,6 @@ GazeboRosTacbot::~GazeboRosTacbot()
 //=================================================================================================
 void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
 {
-    world_ = parent->GetWorld();
     sdf_ = sdf;
     model_ = parent;
 
@@ -80,7 +85,7 @@ void GazeboRosTacbot::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
     setupRosPubAndSub();
     update_connection_ = event::Events::ConnectWorldUpdateBegin(std::bind(&GazeboRosTacbot::onUpdate, this));
 
-    prev_update_time_ = world_->GetSimTime();
+    prev_update_time_ = model_->GetWorld()->GetSimTime();
     ROS_INFO_STREAM("GazeboRosTacbot plugin ready to go! [" << model_->GetName() << "]");
 }
 
@@ -109,7 +114,7 @@ void GazeboRosTacbot::onUpdate()
 {
     ros::spinOnce(); // Process ROS callbacks
 
-    auto time_now = world_->GetSimTime();
+    auto time_now = model_->GetWorld()->GetSimTime();
 
     publishJointState();
     setJointsVelocities();
@@ -143,7 +148,7 @@ bool GazeboRosTacbot::parseSdfAndSetupWheelJoints()
     {
         if (!sdf_->HasElement(param))
         {
-            ROS_ERROR_STREAM("Couldn't find left wheel joint in the model description!");
+            ROS_ERROR_STREAM("Couldn't find: " << param << "in the model description!");
             return false;
         }
         pid_k[index++] = sdf_->GetElement(param)->Get<double>();
@@ -157,7 +162,7 @@ bool GazeboRosTacbot::parseSdfAndSetupWheelJoints()
     {
         if (!sdf_->HasElement(params[i]))
         {
-            ROS_ERROR_STREAM("Couldn't find left wheel joint in the model description!");
+            ROS_ERROR_STREAM("Couldn't find: " << params[i] << " joint in the model description!");
             return false;
         }
         joint_names[i] = sdf_->GetElement(params[i])->Get<std::string>();

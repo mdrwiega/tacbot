@@ -46,8 +46,7 @@
 #include <geometry_msgs/Twist.h>
 #include <tf2_ros/transform_broadcaster.h>
 
-#include <gazebo/gazebo_client.hh>
-#include <gazebo/physics/physics.hh>
+#include <gazebo/common/Plugin.hh>
 
 namespace gazebo {
 
@@ -99,7 +98,6 @@ private:
 private:
     //-----------------------------------------------------------------------------------------------
 
-    physics::WorldPtr world_;                       ///< pointer to simulated world
     physics::ModelPtr model_;                       ///< Pointer to the model
     sdf::ElementPtr sdf_;                           ///< Pointer the the SDF element of the plugin.
     event::ConnectionPtr update_connection_;        ///< Pointer to the update event connection
