@@ -13,7 +13,7 @@
         <remap from="velocity_filter/raw_cmd_vel" to="$(arg prefix)/raw_cmd_vel"/>
         <remap from="velocity_filter/smooth_cmd_vel" to="$(arg prefix)/cmd_vel"/>
         <!-- Velocity feedback -->
-        <remap from="velocity_filter/odometry" to="$(arg prefix)/odom"/>
+        <remap from="velocity_filter/odometry" to="$(arg prefix)/odom_raw"/>
     </node>
 </launch>
 
