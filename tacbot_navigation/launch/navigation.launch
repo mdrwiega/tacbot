@@ -1,29 +1,25 @@
 <launch>
+    <arg name="prefix" default="r1" />
+    
 	<!-- Run mapserver for planners -->
 	<node name="map_server" pkg="map_server" type="map_server" 
               args="$(find tacbot_navigation)/maps/k3.yaml"/>
 
-	<!-- Run mapserver for localization -->
-  	<node name="map_server2" pkg="map_server" type="map_server" 
-                args="$(find tacbot_navigation)/maps/k3_planner.yaml">
-		<remap from="/map" to="/map_planner"/>
-		<remap from="/map_metadata" to="/map_metadata2"/>
-	</node>
-
-	<!-- Run transformation between maps -->
-  	<node name="map_to_map_planner" pkg="tf" type="static_transform_publisher" 
-          args="0.0 0.0 0.0 0.0 0.0 0.0 map map_planner 100"/>
-
 	<!--- Run AMCL algorithm -->
-	<rosparam command="delete" param="/amcl"/>
+    <rosparam command="delete" param="/amcl"/>
+
 	<node name="amcl" pkg="amcl" type="amcl" output="screen">
-  		<param name="initial_pose_x" value="0.0"/>
+        <param name="odom_frame_id" value="$(arg prefix)_odom_raw"/>
+  		<param name="base_frame_id" value="$(arg prefix)_base_link"/>
+        <param name="global_frame_id" value="$(arg prefix)_map"/>
   		<param name="initial_pose_y" value="0.0"/>
   		<param name="initial_pose_a" value="0.0"/>
     	<rosparam command="load"
-                file="$(find tacbot_navigation)/config/amcl_params.yaml"/>
+                  file="$(find tacbot_navigation)/config/amcl_params.yaml"/>
 	</node>
 
 	<!-- Run costmaps and planners -->
-    <include file="$(find tacbot_navigation)/launch/move_base.launch"/>
+    <include file="$(find tacbot_navigation)/launch/move_base.launch">
+        <param name="prefix" value="$(arg prefix)"/>    
+    </include>
 </launch>

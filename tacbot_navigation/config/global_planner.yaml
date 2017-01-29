@@ -18,4 +18,3 @@ GlobalPlanner:
   neutral_cost: 50
   cost_factor: 3.0
   publish_potential: false
-

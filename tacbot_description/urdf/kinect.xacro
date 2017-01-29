@@ -1,34 +1,14 @@
 <?xml version="1.0"?>
 <robot name="sensor_kinect" xmlns:xacro="http://ros.org/wiki/xacro">
 
-    <xacro:property name="kinect_cam_py" value="-0.0125"/>
-    <xacro:property name="cam_px" value="0.085" />
-    <xacro:property name="cam_py" value="0.0125" />
-    <xacro:property name="cam_pz" value="0.14" />
-	<xacro:property name="cam_or" value="0" />
-	<xacro:property name="cam_op" value="0" />
-    <xacro:property name="cam_oy" value="${pi}" />
-
-    <xacro:macro name="sensor_kinect" params="prefix parent">
-    <joint name="${prefix}_camera_rgb_joint" type="fixed">
-        <origin xyz="${cam_px} ${cam_py} ${cam_pz}" rpy="${cam_or} ${cam_op} ${cam_oy}"/>
-        <parent link="${parent}"/>
-        <child link="${prefix}_camera_rgb_frame" />
-    </joint>
-    <link name="${prefix}_camera_rgb_frame"/>
-
-    <joint name="${prefix}_camera_rgb_optical_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
-        <parent link="${prefix}_camera_rgb_frame" />
-        <child link="${prefix}_camera_rgb_optical_frame" />
-    </joint>
-    <link name="${prefix}_camera_rgb_optical_frame"/>
+<xacro:macro name="sensor_kinect" params="prefix parent">
 
     <joint name="${prefix}_camera_joint" type="fixed">
-        <origin xyz="-0.031 ${-kinect_cam_py} -0.016" rpy="0 0 0"/>
-        <parent link="${prefix}_camera_rgb_frame"/>
+        <origin xyz="0.085 0.0125 0.14" rpy="0 ${-pi/10} ${pi}"/>
+        <parent link="${parent}"/>
         <child link="${prefix}_camera_link"/>
     </joint>
+    
     <link name="${prefix}_camera_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
@@ -51,10 +31,24 @@
         </inertial>
     </link>
 
+    <joint name="${prefix}_camera_rgb_joint" type="fixed">
+        <origin xyz="0 -0.045 0" rpy="0 0 ${-pi}"/>
+        <parent link="${prefix}_camera_link"/>
+        <child link="${prefix}_camera_rgb_frame" />
+    </joint>
+    <link name="${prefix}_camera_rgb_frame"/>
+
+    <joint name="${prefix}_camera_rgb_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+        <parent link="${prefix}_camera_rgb_frame" />
+        <child link="${prefix}_camera_rgb_optical_frame" />
+    </joint>
+    <link name="${prefix}_camera_rgb_optical_frame"/>
+
     <!-- For Gazebo simulation only -->
     <joint name="${prefix}_camera_depth_joint" type="fixed">
-        <origin xyz="0 ${2 * -kinect_cam_py} 0" rpy="0 0 0" />
-        <parent link="${prefix}_camera_rgb_frame" />
+        <origin xyz="0 -0.02 0" rpy="0 0 ${-pi}" />
+        <parent link="${prefix}_camera_link" />
         <child link="${prefix}_camera_depth_frame" />
     </joint>
     <link name="${prefix}_camera_depth_frame"/>
@@ -66,5 +60,5 @@
     </joint>
     <link name="${prefix}_camera_depth_optical_frame"/>
 
-    </xacro:macro>
+</xacro:macro>
 </robot>

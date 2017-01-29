@@ -1,6 +1,4 @@
 local_costmap:
-  global_frame: odom
-  robot_base_frame: base_link
   update_frequency: 3.0
   publish_frequency: 2.0
   static_map: false
@@ -12,5 +10,3 @@ local_costmap:
   plugins:
     - {name: obstacles, type: "costmap_2d::ObstacleLayer"}
     - {name: inflater, type: "costmap_2d::InflationLayer"}
-    - {name: downstairs, type: "nav_layer_from_points::NavLayerPoints"}
-

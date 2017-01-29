@@ -1,27 +1,37 @@
 <launch>
+    <arg name="prefix" default="r1" />
+
 	<!-- Delete old move_base component parameters -->
 	<rosparam command="delete" param="/move_base"/>
 
-	<!-- Run costmaps and planners -->
+	<!-- Run move base -->
 	<node name="move_base" pkg="move_base" type="move_base" 
         respawn="false"  output="screen">
-  		<remap from="/map" to="/map_planner" />
-		  <remap from="/cmd_vel" to="/nav_cmd_vel"/>
-		  <remap from="/odom" to="/wheels_odom"/>
+		<remap from="cmd_vel" to="raw_cmd_vel"/>
+		<remap from="odom" to="odom_raw"/>
 
-    	<rosparam command="load" ns="global_costmap" 
-                file="$(find tacbot_navigation)/config/costmap_common_params.yaml"/>
-    	<rosparam command="load" ns="local_costmap" 
-                file="$(find tacbot_navigation)/config/costmap_common_params.yaml"/>
-    	<rosparam command="load" 
-                file="$(find tacbot_navigation)/config/local_costmap_params.yaml"/>
-    	<rosparam command="load" 
-                file="$(find tacbot_navigation)/config/global_costmap_params.yaml"/>
-    	<rosparam command="load" 
-                file="$(find tacbot_navigation)/config/dwa_local_planner_params.yaml"/>
-    	<rosparam command="load" 
-                file="$(find tacbot_navigation)/config/global_planner_params.yaml"/>
-    	<rosparam command="load" 
-                file="$(find tacbot_navigation)/config/move_base_params.yaml"/>
+        <rosparam command="load" ns="local_costmap" 
+                file="$(find tacbot_navigation)/config/costmap_common.yaml"/>
+        <rosparam command="load" ns="global_costmap" 
+                file="$(find tacbot_navigation)/config/costmap_common.yaml"/>
+
+        <!--  Local costmap -->
+        <param name="local_costmap/global_frame" type="str" value="$(arg prefix)_odom"/>
+        <param name="local_costmap/robot_base_frame" type="str" value="$(arg prefix)_base_link"/>
+        <rosparam command="load" file="$(find tacbot_navigation)/config/local_costmap.yaml"/>
+
+        <!-- Global costmap -->
+        <param name="global_costmap/global_frame" type="str" value="$(arg prefix)_map"/>
+        <param name="global_costmap/robot_base_frame" type="str" value="$(arg prefix)_base_link"/> 
+    	<rosparam command="load" file="$(find tacbot_navigation)/config/global_costmap.yaml"/>
+
+        <!-- DWA local planner -->
+    	<rosparam command="load" file="$(find tacbot_navigation)/config/dwa_local_planner.yaml"/>
+    
+        <!-- Global planner -->
+    	<rosparam command="load" file="$(find tacbot_navigation)/config/global_planner.yaml"/>
+    
+        <!-- Move base -->
+    	<rosparam command="load" file="$(find tacbot_navigation)/config/move_base.yaml"/>
   </node>
 </launch>

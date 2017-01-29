@@ -31,6 +31,3 @@ odom_alpha1: 2.5
 odom_alpha2: 2.5
 odom_alpha3: 2.5
 odom_alpha4: 2.5
-odom_frame_id:    odom
-base_frame_id:    base_link
-global_frame_id:  map

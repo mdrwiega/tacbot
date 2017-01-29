@@ -21,5 +21,3 @@
 			pkg="controller_manager" type="spawner" 
 			args="base_controller"/>
 </launch>
-
-

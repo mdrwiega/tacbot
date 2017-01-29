@@ -1,6 +1,4 @@
 <launch>
-    <arg name="prefix" default=""/>
-
     <!--  Run nodelet -->
     <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager"/>
 
@@ -10,10 +8,10 @@
 
         <rosparam command="load" file="$(find tacbot_launch)/config/velocity_filter.yaml"/>
 
-        <remap from="velocity_filter/raw_cmd_vel" to="$(arg prefix)/raw_cmd_vel"/>
-        <remap from="velocity_filter/smooth_cmd_vel" to="$(arg prefix)/cmd_vel"/>
+        <remap from="velocity_filter/raw_cmd_vel" to="raw_cmd_vel"/>
+        <remap from="velocity_filter/smooth_cmd_vel" to="cmd_vel"/>
         <!-- Velocity feedback -->
-        <remap from="velocity_filter/odometry" to="$(arg prefix)/odom_raw"/>
+        <remap from="velocity_filter/odometry" to="odom_raw"/>
     </node>
 </launch>
 

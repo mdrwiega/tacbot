@@ -1,7 +1,8 @@
 <launch>
-    <arg name="robot_prefix" default="r1"/>
+    <arg name="prefix" default="r1"/>
     <!-- Allows to switch between real robot and Gazebo simulation -->
     <arg name="real_robot" default="false" />
+    <arg name="run_gazebo_sim" default="false" />
 
 	<!-- Run real hardware drivers -->
 	<group if="$(arg real_robot)">
@@ -9,15 +10,22 @@
 	</group>
 
 	<!-- Run Gazebo simulation -->
-	<group unless="$(arg real_robot)">
+	<group if="$(arg run_gazebo_sim)">
         <include file="$(find tacbot_simulation)/launch/world1.launch">
-            <arg name="robot_prefix" value="$(arg robot_prefix)"/>
+            <arg name="prefix" value="$(arg prefix)"/>
             <arg name="gui" value="true"/>
         </include>
 	</group>
 
     <!-- Run velocity filter -->
-    <include file="$(find tacbot_launch)/launch/velocity_filter.launch">
-        <arg name="prefix" value="$(arg robot_prefix)"/>
-    </include>
+    <include file="$(find tacbot_launch)/launch/velocity_filter.launch"/>
+
+    <!-- Conversion depth image from Kinect sensor to laserscan -->
+    <node name="laserscan_kinect" pkg="laserscan_kinect" type="laserscan_kinect">
+        <param name="output_frame_id" value="$(arg prefix)_camera_depth_frame"/>
+        <remap from="image" to="kinect/depth/image_raw"/>
+        <remap from="camera_info" to="kinect/depth/camera_info"/>
+        <rosparam command="load" 
+             file="$(find tacbot_launch)/config/laserscan_kinect_params.yaml"/>
+    </node> 
 </launch>
