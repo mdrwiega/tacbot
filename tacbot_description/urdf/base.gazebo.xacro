@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="base_gazebo" params="prefix">
+        <!-- Base link -->
+        <gazebo reference="${prefix}_base_link">
+            <mu1>0.3</mu1>
+            <mu2>0.3</mu2>
+            <material>Gazebo/Grey</material>
+        </gazebo>
+
+        <!-- Tacbot controller plugin for Gazebo -->
+        <gazebo>
+            <plugin name="tacbot_controller" filename="libgazebo_ros_tacbot.so">
+                <wheel_BL_joint_name>${prefix}_wheel_BL_joint</wheel_BL_joint_name>
+                <wheel_BR_joint_name>${prefix}_wheel_BR_joint</wheel_BR_joint_name>
+                <wheel_FL_joint_name>${prefix}_wheel_FL_joint</wheel_FL_joint_name>
+                <wheel_FR_joint_name>${prefix}_wheel_FR_joint</wheel_FR_joint_name>
+                <reg_kp>2.0</reg_kp>
+                <reg_ki>0.0</reg_ki>
+                <reg_kd>0.0</reg_kd>
+                <back_wheel_separation>.3</back_wheel_separation>
+                <front_wheel_separation>.3</front_wheel_separation>
+                <wheel_diameter>0.11</wheel_diameter>
+                <max_torque>0.4</max_torque>
+                <publish_tf>1</publish_tf>
+            </plugin>
+        </gazebo>
+    </xacro:macro>
+
+</robot>
+
+

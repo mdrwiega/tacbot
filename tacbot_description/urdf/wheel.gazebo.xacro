@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="wheel_gazebo" params="prefix postfix">
+        <gazebo reference="${prefix}_wheel_${postfix}">
+            <mu1>1.0</mu1>
+            <mu2>1.0</mu2>
+            <kp>100000.0</kp>
+            <kd>10.0</kd>
+            <minDepth>0.001</minDepth>
+            <maxVel>1.0</maxVel>
+            <material>Gazebo/Black</material>
+        </gazebo>
+    </xacro:macro>
+
+</robot>

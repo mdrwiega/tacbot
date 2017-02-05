@@ -85,7 +85,7 @@ void GazeboTacbotIMU::Load(physics::ModelPtr parent, sdf::ElementPtr sdf)
 //=================================================================================================
 void GazeboTacbotIMU::setupRosPubAndSub()
 {
-    const std::string imu_topic = "/" + model_->GetName() + "/" + topic_name_;
+    const std::string imu_topic = model_->GetName() + "/" + topic_name_;
     pub_imu_ = ros_node_.advertise<sensor_msgs::Imu>(imu_topic, 1);
     ROS_INFO_STREAM(ros_node_.getNamespace() << ": Advertise IMU[" << imu_topic << "].");
 }

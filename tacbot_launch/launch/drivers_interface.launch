@@ -25,6 +25,7 @@
         <param name="output_frame_id" value="$(arg prefix)_camera_depth_frame"/>
         <remap from="image" to="kinect/depth/image_raw"/>
         <remap from="camera_info" to="kinect/depth/camera_info"/>
+        <remap from="scan" to="scan_kinect"/>
         <rosparam command="load" 
              file="$(find tacbot_launch)/config/laserscan_kinect_params.yaml"/>
     </node> 

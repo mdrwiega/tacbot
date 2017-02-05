@@ -55,10 +55,10 @@ enum class Wheel {BL = 0, BR = 1, FL = 2, FR = 3};
 /// Converts Wheel enum to string.
 constexpr auto toString(const Wheel wheel) noexcept {
     switch (wheel) {
-    case Wheel::BL: return "BL";
-    case Wheel::BR: return "BR";
-    case Wheel::FL: return "FL";
-    case Wheel::FR: return "FR";
+        case Wheel::BL: return "BL";
+        case Wheel::BR: return "BR";
+        case Wheel::FL: return "FL";
+        case Wheel::FR: return "FR";
     }
 }
 

@@ -72,7 +72,7 @@ private:
     event::ConnectionPtr update_connection_;        ///< Pointer to the update event connection
     sensors::ImuSensorPtr imu_;                     ///< Pointer to IMU sensor model
 
-    ros::NodeHandle ros_node_{"gazebo_tacbot_imu"}; ///< A node use for ROS transport
+    ros::NodeHandle ros_node_;                      ///< A node use for ROS transport
     ros::Publisher  pub_imu_;                       ///< IMU data publisher
 
     std::string frame_name_{"imu_link"};            ///< Name of IMU sensor frame

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="hokuyo_lx30" params="prefix parent">
+    
+        <xacro:property name="hokuyo_x" value="0.05"/>
+        <xacro:property name="hokuyo_y" value="0.05"/>
+        <xacro:property name="hokuyo_z" value="0.06"/>
+        <xacro:property name="hokuyo_mass" value="0.1"/>
+        
+        <joint name="${prefix}_hokuyo_joint" type="fixed">
+            <axis xyz="0 1 0" />
+            <origin xyz="0.12 0.0 ${hokuyo_z/2 + base_height/2}" rpy="0 0 0"/>
+            <parent link="${parent}"/>
+            <child link="${prefix}_hokuyo_link"/>
+        </joint>
+
+        <link name="${prefix}_hokuyo_link" type="laser">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${hokuyo_x} ${hokuyo_y} ${hokuyo_z}" />
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <inertial>
+                <mass value="${hokuyo_mass}" />
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <cuboid_inertia m="${hokuyo_mass}" x="${hokuyo_x}" y="${hokuyo_y}" z="${hokuyo_z}"/>
+            </inertial>
+        </link>
+
+    </xacro:macro>
+
+</robot>

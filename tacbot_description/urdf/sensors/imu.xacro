@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="sensor_imu" params="prefix parent">
+
+        <joint name="${prefix}_imu_joint" type="fixed">
+            <axis xyz="0 1 0"/>
+            <origin xyz="0.05 0.0 0.1" rpy="0 0 0"/>
+            <parent link="${parent}"/>
+            <child link="${prefix}_imu_link"/>
+        </joint>
+
+        <link name="${prefix}_imu_link">
+            <inertial>
+                <mass value="0.01"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <cuboid_inertia m="0.01" x="0.03" y="0.03" z="0.03"/>
+            </inertial>
+        </link>
+
+    </xacro:macro>
+
+</robot>

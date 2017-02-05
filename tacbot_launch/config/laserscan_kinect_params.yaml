@@ -1,7 +1,7 @@
 # Minimum sensor range (m).
 range_min: 0.4
 # Maximum sensor range (m).
-range_max: 5.0
+range_max: 8.0
 # Height of used part of depth img (px).
 scan_height: 450
 # Row step in depth image processing (px).
@@ -12,7 +12,7 @@ cam_model_update: false
 # Height of sensor optical center mount (m).
 sensor_mount_height: 0.4
 # Sensor tilt angle compensation.
-sensor_tilt_angle: 16.0
+sensor_tilt_angle: 0.0
 # Remove ground from scan.
 ground_remove_en: true
 # Ground margin (m).

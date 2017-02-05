@@ -4,7 +4,7 @@
 <xacro:macro name="sensor_kinect" params="prefix parent">
 
     <joint name="${prefix}_camera_joint" type="fixed">
-        <origin xyz="0.085 0.0125 0.14" rpy="0 ${-pi/10} ${pi}"/>
+        <origin xyz="-0.1 0.0 0.2" rpy="0 0 0"/>
         <parent link="${parent}"/>
         <child link="${prefix}_camera_link"/>
     </joint>
@@ -32,7 +32,7 @@
     </link>
 
     <joint name="${prefix}_camera_rgb_joint" type="fixed">
-        <origin xyz="0 -0.045 0" rpy="0 0 ${-pi}"/>
+        <origin xyz="0 -0.045 0" rpy="0 0 0"/>
         <parent link="${prefix}_camera_link"/>
         <child link="${prefix}_camera_rgb_frame" />
     </joint>
@@ -45,9 +45,8 @@
     </joint>
     <link name="${prefix}_camera_rgb_optical_frame"/>
 
-    <!-- For Gazebo simulation only -->
     <joint name="${prefix}_camera_depth_joint" type="fixed">
-        <origin xyz="0 -0.02 0" rpy="0 0 ${-pi}" />
+        <origin xyz="0 -0.02 0" rpy="0 0 0" />
         <parent link="${prefix}_camera_link" />
         <child link="${prefix}_camera_depth_frame" />
     </joint>
