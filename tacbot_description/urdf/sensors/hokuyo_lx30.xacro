@@ -8,14 +8,13 @@
         <xacro:property name="hokuyo_z" value="0.06"/>
         <xacro:property name="hokuyo_mass" value="0.1"/>
         
-        <joint name="${prefix}_hokuyo_joint" type="fixed">
-            <axis xyz="0 1 0" />
+        <joint name="${prefix}/hokuyo_joint" type="fixed">
             <origin xyz="0.12 0.0 ${hokuyo_z/2 + base_height/2}" rpy="0 0 0"/>
             <parent link="${parent}"/>
-            <child link="${prefix}_hokuyo_link"/>
+            <child link="${prefix}/hokuyo_link"/>
         </joint>
 
-        <link name="${prefix}_hokuyo_link" type="laser">
+        <link name="${prefix}/hokuyo_link" type="laser">
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>

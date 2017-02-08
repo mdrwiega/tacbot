@@ -19,7 +19,7 @@
   </include>
 
   <param name="robot_description" 
-         command="$(find xacro)/xacro.py $(arg model) prefix:=$(arg prefix)" />
+         command="$(find xacro)/xacro $(arg model) --inorder prefix:=$(arg prefix)" />
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"

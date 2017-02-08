@@ -4,8 +4,8 @@
     <!-- Wheel parameters -->
     <xacro:property name="wheel_width"  value=".055"/>
     <xacro:property name="wheel_radius" value=".055"/>
-    <xacro:property name="wheel_dis"    value=".0235"/>
-    <xacro:property name="wheel_mass"   value=".2"/>
+    <xacro:property name="wheel_dis"    value=".024"/>
+    <xacro:property name="wheel_mass"   value=".5"/>
 
     <xacro:macro name="wheel" params="prefix postfix side front">
 
@@ -13,14 +13,11 @@
         <joint name="${prefix}_wheel_${postfix}_joint" type="continuous">
             <parent link="${prefix}_base_link"/>
             <child link="${prefix}_wheel_${postfix}"/>
-            <origin xyz="${front*(base_length/2-wheel_dis)} ${side*(base_width/2+wheel_width/2)} 0"
-                    rpy="${pi/2} 0 0"/>
+            <origin xyz="${front*(base_length/2-wheel_dis)} ${side*(base_width/2+wheel_width/2 + 0.005)} 0"
+                    rpy="${-pi/2} 0 0"/>
             <axis xyz="0 0 1"/>
-            <dynamics damping="0" friction = "0" />
-            <limit effort="5" velocity="1.0" />
-            <safety_controller k_velocity="5" />
         </joint>
-                
+
         <!-- Wheel links -->
         <link name="${prefix}_wheel_${postfix}">
             <visual>
@@ -37,11 +34,12 @@
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </collision>
             <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <mass value="${wheel_mass}" />
                 <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
             </inertial>
         </link>
-
+        
         <!-- Wheel transmissions -->
         <transmission name="${prefix}_tran_${postfix}">
             <type>transmission_interface/SimpleTransmission</type>

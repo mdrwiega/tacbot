@@ -13,7 +13,7 @@
         <link name="${prefix}_base_footprint"/>
 
         <joint name="${prefix}_base_joint" type="fixed">
-            <origin xyz="0 0 5" rpy="0 0 0" />
+            <origin xyz="0 0 ${wheel_radius+base_height/2}" rpy="0 0 0" />
             <parent link="${prefix}_base_footprint"/>
             <child link="${prefix}_base_link"/>
         </joint>
@@ -33,8 +33,8 @@
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </collision>
             <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <mass value="${base_mass}"/>
-                <origin xyz="0 0 0"/>
                 <cuboid_inertia m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
             </inertial>
         </link>
@@ -43,6 +43,7 @@
         <xacro:property name="kinect_mounting_x" value="0.06"/>
         <xacro:property name="kinect_mounting_y" value="0.06"/>
         <xacro:property name="kinect_mounting_z" value="0.15"/>
+        <xacro:property name="kinect_mounting_mass" value="0.2"/>
         
         <joint name="${prefix}_kinect_mounting_joint" type="fixed">
             <origin xyz="-0.1 0 ${base_height/2 + kinect_mounting_z/2}" rpy="0 0 0" />
@@ -67,11 +68,10 @@
             <inertial>
                 <mass value="0.2"/>
                 <origin xyz="0 0 0"/>
-                <cuboid_inertia m="0.2" x="${kinect_mounting_x}" y="${kinect_mounting_y}" z="${kinect_mounting_z}"/>
+                <cuboid_inertia m="${kinect_mounting_mass}" x="${kinect_mounting_x}" y="${kinect_mounting_y}" z="${kinect_mounting_z}"/>
             </inertial>
         </link>
-        
-        
+
     </xacro:macro>
 
 </robot>

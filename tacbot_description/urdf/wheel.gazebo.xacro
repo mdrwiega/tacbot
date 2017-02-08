@@ -6,10 +6,10 @@
         <gazebo reference="${prefix}_wheel_${postfix}">
             <mu1>1.0</mu1>
             <mu2>1.0</mu2>
-            <kp>100000.0</kp>
-            <kd>10.0</kd>
             <minDepth>0.001</minDepth>
-            <maxVel>1.0</maxVel>
+            <maxVel>10</maxVel>
+            <kp>1000000.0</kp>
+            <kd>1.0</kd>
             <material>Gazebo/Black</material>
         </gazebo>
     </xacro:macro>

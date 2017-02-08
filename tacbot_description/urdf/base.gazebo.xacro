@@ -7,17 +7,23 @@
         <gazebo reference="${prefix}_base_link">
             <mu1>0.3</mu1>
             <mu2>0.3</mu2>
+            <gravity>true</gravity>
+            <material>Gazebo/Grey</material>
+        </gazebo>
+
+        <!-- Kinect mounting -->
+        <gazebo reference="${prefix}_kinect_mounting">
             <material>Gazebo/Grey</material>
         </gazebo>
 
         <!-- Tacbot controller plugin for Gazebo -->
         <gazebo>
             <plugin name="tacbot_controller" filename="libgazebo_ros_tacbot.so">
-                <wheel_BL_joint_name>${prefix}_wheel_BL_joint</wheel_BL_joint_name>
-                <wheel_BR_joint_name>${prefix}_wheel_BR_joint</wheel_BR_joint_name>
-                <wheel_FL_joint_name>${prefix}_wheel_FL_joint</wheel_FL_joint_name>
-                <wheel_FR_joint_name>${prefix}_wheel_FR_joint</wheel_FR_joint_name>
-                <reg_kp>2.0</reg_kp>
+                <wheel_BL_joint>${prefix}_wheel_BL_joint</wheel_BL_joint>
+                <wheel_BR_joint>${prefix}_wheel_BR_joint</wheel_BR_joint>
+                <wheel_FL_joint>${prefix}_wheel_FL_joint</wheel_FL_joint>
+                <wheel_FR_joint>${prefix}_wheel_FR_joint</wheel_FR_joint>
+                <reg_kp>1.0</reg_kp>
                 <reg_ki>0.0</reg_ki>
                 <reg_kd>0.0</reg_kd>
                 <back_wheel_separation>.3</back_wheel_separation>

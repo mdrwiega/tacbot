@@ -46,7 +46,6 @@
 #include <gazebo/physics/Joint.hh>
 #include <gazebo/physics/JointController.hh>
 
-
 namespace gazebo {
 
 //=================================================================================================
@@ -153,11 +152,11 @@ bool GazeboRosTacbot::parseSdfAndSetupWheelJoints()
         pid_k[index++] = sdf_->GetElement(param)->Get<double>();
     }
 
-    std::array<std::string, WHEELS_COUNT> joint_names;
-    std::vector<std::string> params = { "wheel_BL_joint_name", "wheel_BR_joint_name",
-                                        "wheel_FL_joint_name", "wheel_FR_joint_name" };
+    std::array<std::string, wheels_count> joint_names;
+    std::vector<std::string> params = { "wheel_BL_joint", "wheel_BR_joint",
+                                        "wheel_FL_joint", "wheel_FR_joint" };
 
-    for (int i = 0; i < WHEELS_COUNT; ++i)
+    for (size_t i = 0; i < wheels_count; ++i)
     {
         if (!sdf_->HasElement(params[i]))
         {
@@ -216,7 +215,7 @@ void GazeboRosTacbot::publishJointState()
     joint_state_.header.stamp = ros::Time::now();
     joint_state_.header.frame_id = model_->GetName() + "_base_link";;
 
-    for (int i = 0; i < WHEELS_COUNT; ++i)
+    for (int i = 0; i < wheels_count; ++i)
     {
         joint_state_.position[i] = joints_[i]->GetAngle(0).Radian();
         joint_state_.velocity[i] = joints_[i]->GetVelocity(0);
@@ -227,7 +226,7 @@ void GazeboRosTacbot::publishJointState()
 //=================================================================================================
 void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 {
-    nav_msgs::Odometry odom_msg; // ROS message for odometry data
+    nav_msgs::Odometry odom_msg;
 
     odom_msg.header.stamp = joint_state_.header.stamp;
     odom_msg.header.frame_id = model_->GetName() + "_odom_raw";
@@ -243,13 +242,13 @@ void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 
     if (std::isnan(dl))
     {
-        ROS_WARN_STREAM_THROTTLE(0.1, "Gazebo plugin: NaN in dl. Step time: "
+        ROS_WARN_STREAM_THROTTLE(1, "Gazebo tacbot plugin: NaN in dl. Step time: "
                                  << step_time.Double() << ", velocity: " << left);
         dl = 0.0;
     }
     if (std::isnan(dr))
     {
-        ROS_WARN_STREAM_THROTTLE(0.1, "Gazebo plugin: NaN in dr. Step time: "
+        ROS_WARN_STREAM_THROTTLE(1, "Gazebo tacbot plugin: NaN in dr. Step time: "
                                  << step_time.Double() << ", velocity: " << right);
         dr = 0.0;
     }
@@ -285,7 +284,7 @@ void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 
     if (publish_tf_)
     {
-        geometry_msgs::TransformStamped odom_tf; // TF transform for the odom frame
+        geometry_msgs::TransformStamped odom_tf;
         odom_tf.header = odom_msg.header;
         odom_tf.child_frame_id = odom_msg.child_frame_id;
         odom_tf.transform.translation.x = odom_msg.pose.pose.position.x;
@@ -299,11 +298,11 @@ void GazeboRosTacbot::updateAndPublishOdometry(common::Time && step_time)
 //=================================================================================================
 void GazeboRosTacbot::setJointsVelocities()
 {
-    for(size_t i = 0; i < WHEELS_COUNT; ++i)
-    {
-        model_->GetJointController()->SetVelocityTarget( joints_[i]->GetScopedName(),
-                                                         wheel_speed_cmd_[i] / (wheel_diameter_ / 2.0));
-    }
+     for(size_t i = 0; i < wheels_count; ++i)
+     {
+         const auto velocity = wheel_speed_cmd_[i] / (wheel_diameter_ / 2.0);
+         model_->GetJointController()->SetVelocityTarget( joints_[i]->GetScopedName(), velocity);
+     }
 }
 
 // Register this plugin with the simulator

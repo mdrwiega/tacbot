@@ -4,23 +4,25 @@
 
     <!-- Properties -->
 	<xacro:property name="prefix" value="$(arg prefix)"/>
+	<xacro:arg name="prefix" default="r1"/>
 
     <xacro:include filename="utils.xacro"/>
     <xacro:include filename="materials.xacro"/>
 
     <!-- Base link and wheels -->
     <xacro:include filename="base.xacro"/>
-    <xacro:include filename="base.gazebo.xacro"/>
     <xacro:include filename="wheel.xacro"/>
-    <xacro:include filename="wheel.gazebo.xacro"/>
-
     <base_link prefix="${prefix}"/>
-    <base_gazebo prefix="${prefix}"/>
 
-    <wheel prefix="${prefix}" postfix="FL" side="-1" front="1"/>
-    <wheel prefix="${prefix}" postfix="FR" side="1"  front="1"/>
-    <wheel prefix="${prefix}" postfix="BL" side="-1" front="-1"/>
-    <wheel prefix="${prefix}" postfix="BR" side="1"  front="-1"/>
+    <wheel prefix="${prefix}" postfix="FL" side="1" front="1"/>
+    <wheel prefix="${prefix}" postfix="FR" side="-1"  front="1"/>
+    <wheel prefix="${prefix}" postfix="BL" side="1" front="-1"/>
+    <wheel prefix="${prefix}" postfix="BR" side="-1"  front="-1"/>
+
+    <xacro:include filename="base.gazebo.xacro"/>
+    <base_gazebo prefix="${prefix}"/>
+    
+    <xacro:include filename="wheel.gazebo.xacro"/>
     <wheel_gazebo prefix="${prefix}" postfix="FL"/>
     <wheel_gazebo prefix="${prefix}" postfix="FR"/>
     <wheel_gazebo prefix="${prefix}" postfix="BL"/>

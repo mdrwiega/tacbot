@@ -48,8 +48,6 @@
 
 namespace gazebo {
 
-constexpr uint WHEELS_COUNT = 4;
-
 enum class Wheel {BL = 0, BR = 1, FL = 2, FR = 3};
 
 /// Converts Wheel enum to string.
@@ -95,11 +93,12 @@ private:
 
 private:
     //-----------------------------------------------------------------------------------------------
+    static constexpr uint wheels_count{4};          ///< Number of robot wheels
     physics::ModelPtr model_;                       ///< Pointer to the Gazebo model
     sdf::ElementPtr sdf_;                           ///< Pointer the the SDF element of the plugin.
     event::ConnectionPtr update_connection_;        ///< Pointer to the update event connection
-    std::array<physics::JointPtr, WHEELS_COUNT> joints_;          ///< Pointers to Gazebo's joints
-    std::array<double, WHEELS_COUNT> wheel_speed_cmd_{{0,0,0,0}}; ///< Desired speeds of wheels
+    std::array<physics::JointPtr, wheels_count> joints_;          ///< Pointers to Gazebo's joints
+    std::array<double, wheels_count> wheel_speed_cmd_{{0,0,0,0}}; ///< Desired speeds of wheels
 
     ros::NodeHandle ros_node_;                      ///< A node use for ROS transport
     sensor_msgs::JointState joint_state_;           ///< ROS message for joint sates

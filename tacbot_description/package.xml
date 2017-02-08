@@ -2,7 +2,7 @@
   <name>tacbot_description</name>
   <version>1.0.1</version>
   <description>
-	The URDF based description of robot.
+    The URDF based description of robot.
   </description>
   <author>Michal Drwiega</author>
   <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>

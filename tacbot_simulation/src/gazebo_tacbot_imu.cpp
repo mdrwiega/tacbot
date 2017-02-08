@@ -30,7 +30,7 @@
 /**
  * @file   gazebo_tacbot_imu.cpp
  * @author Michal Drwiega (drwiega.michal@gmail.com)
- * @date   2016
+ * @date   2017
  * @brief  The Gazebo plugin for Tacbot IMU.
  */
 
