@@ -1,7 +1,7 @@
 <launch>
 	<arg name="file" default="navigation"/>
 
-	<node name="rviz" pkg="rviz" type="rviz" 
-			required="true" 
-			args="-d $(find tacbot_launch)/config/$(arg file).rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" 
+          required="true" 
+		  args="-d $(find tacbot_launch)/config/$(arg file).rviz"/>
 </launch>

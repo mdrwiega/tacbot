@@ -4,15 +4,13 @@
 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
 
-        <remap from="odometry/filtered" to="$(arg prefix)/odom_out"/>
+        <remap from="odometry/filtered" to="odom"/>
 <!--    <param name="tf_prefix"         value="$(arg prefix)_"/>
         <param name="map_frame"         value="$(arg prefix)_odom"/> -->
         <param name="odom_frame"        value="$(arg prefix)_odom"/>
         <param name="base_link_frame"   value="$(arg prefix)_base_link"/>
         <param name="world_frame"       value="$(arg prefix)_odom"/>
 
-        <param name="odom0"             value="$(arg prefix)/odom_raw"/>
-        <param name="imu0"             value="$(arg prefix)/imu_raw"/>
         <rosparam command="load" file="$(find tacbot_launch)/config/ekf_rel_localization.yaml" />
     </node>
 </launch>

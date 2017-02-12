@@ -4,5 +4,3 @@
         args="raw_cmd_vel stop_cmd_vel key_cmd_vel nav_cmd_vel pad_cmd_vel man_cmd_vel mux:=mux_cmd_vel"
         output="screen"/>
 </launch>
-
-

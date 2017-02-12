@@ -30,7 +30,7 @@
                 <front_wheel_separation>.3</front_wheel_separation>
                 <wheel_diameter>0.11</wheel_diameter>
                 <max_torque>0.4</max_torque>
-                <publish_tf>1</publish_tf>
+                <publish_tf>false</publish_tf>
             </plugin>
         </gazebo>
     </xacro:macro>

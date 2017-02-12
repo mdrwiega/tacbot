@@ -9,7 +9,7 @@
 		<remap from="last" to="last_front"/>
 		<remap from="most_intense" to="most_intense_front"/>
 		<remap from="diagnostics" to="diagnostics_front"/>
-		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_front.yaml"/>
+		<rosparam command="load" file="$(find tacbot_launch)/config/hokuyo_front.yaml"/>
 	</node>
  
 	<!-- Front Hokuyo transformation -->
@@ -17,9 +17,9 @@
         args="0.25 0.27 0.10 -2.335 3.14 0 wheels_base_link laser_front 100"/>
 
 	<!-- Front Hokuyo measurements cutter -->
-	<node pkg="carol_launch" type="laserscan_cutter.py" 
+	<node pkg="tacbot_launch" type="laserscan_cutter.py" 
 				name="front_laser_cutter" output="screen">
-		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_front.yaml"/>
+		<rosparam command="load" file="$(find tacbot_launch)/config/hokuyo_front.yaml"/>
 	</node>
 
 
@@ -31,7 +31,7 @@
 		<remap from="last" to="last_back"/>
 		<remap from="most_intense" to="most_intense_back"/>
 		<remap from="diagnostics" to="diagnostics_back"/>
-		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_back.yaml"/>
+		<rosparam command="load" file="$(find tacbot_launch)/config/hokuyo_back.yaml"/>
 	</node> 
 
 	<!-- Back Hokuyo transformation -->
@@ -39,14 +39,14 @@
         args="-0.25 -0.27 0.10 0.785 3.14 0 wheels_base_link laser_back 100"/>
 
 	<!-- Back Hokuyo measurements cutter -->
-	<node pkg="carol_launch" type="laserscan_cutter.py" 
+	<node pkg="tacbot_launch" type="laserscan_cutter.py" 
 				name="back_laser_cutter" output="screen">
-		<rosparam command="load" file="$(find carol_launch)/config/hokuyo_back.yaml"/>
+		<rosparam command="load" file="$(find tacbot_launch)/config/hokuyo_back.yaml"/>
 	</node>
 
 
 	<!-- Laser scans merger - ira laser tools 
-	<include file="$(find carol_launch)/launch/laserscan_multi_merger.launch"/>  -->
+	<include file="$(find tacbot_launch)/launch/laserscan_multi_merger.launch"/>  -->
 
 </launch>
 

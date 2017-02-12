@@ -9,15 +9,6 @@
 
     <xacro:macro name="base_link" params="prefix">
 
-        <!-- Base footprint -->
-        <link name="${prefix}_base_footprint"/>
-
-        <joint name="${prefix}_base_joint" type="fixed">
-            <origin xyz="0 0 ${wheel_radius+base_height/2}" rpy="0 0 0" />
-            <parent link="${prefix}_base_footprint"/>
-            <child link="${prefix}_base_link"/>
-        </joint>
-
         <link name="${prefix}_base_link">
             <visual>
                 <geometry>

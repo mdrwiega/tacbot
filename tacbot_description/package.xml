@@ -7,7 +7,7 @@
   <author>Michal Drwiega</author>
   <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>
   <license>BSD</license>
-  <url type="website">http://ros.org/wiki/</url>
+  <url type="website">http://www.mdrwiega.com</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
