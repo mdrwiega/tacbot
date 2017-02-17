@@ -1,0 +1,14 @@
+<launch>
+    <arg name="prefix" default="r1"/>
+
+    <node pkg="tacbot_utils" type="gazebo_link_pose_pub.py" name="gazebo_link_pose" output="screen">
+        <param name="link_name" value="$(arg prefix)::$(arg prefix)_base_footprint"/>
+    </node>
+  
+    <node pkg="tf" type="static_transform_publisher" name="" 
+        args="0 0 0 0 0 0 map $(arg prefix)_odom 100"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="" 
+        args="0 0 0 0 0 0 map $(arg prefix)_odom_ref 100"/>
+  
+</launch>

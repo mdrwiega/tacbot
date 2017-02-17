@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="tacbot_utils" type="gazebo_link_pose_pub.py" name="gazebo_link_pose"  output="screen">
+        <param name="link_name" value="r1::r1_base_footprint"/>
+    </node>
+  
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_front_laser" 
+        args="0.25 0.27 0.10 -2.335 3.14 0 wheels_base_link laser_front 100"/>
+  
+</launch>
